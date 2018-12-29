@@ -26,7 +26,7 @@ namespace cwing {
 		added.push_back(s);
 	}
 
-	void GameEngine::add(Sprite *s) {
+	void GameEngine::remove(Sprite *s) {
 		removed.push_back(s);
 	}
 

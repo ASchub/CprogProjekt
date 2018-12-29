@@ -7,7 +7,6 @@ namespace cwing {
 	cwing::System::System()
 	{
 		SDL_Init(SDL_INIT_EVERYTHING);
-
 		//bygger fönstret och renderaren för vårat globala sys objekt.
 		win = SDL_CreateWindow("Cwing", 100, 100, 800, 600, 0); //posX,posY,höjd,bredd,inga flaggor
 		ren = SDL_CreateRenderer(win, -1, 0); //-1 betyder ta första bästa renderare, inga flaggor
