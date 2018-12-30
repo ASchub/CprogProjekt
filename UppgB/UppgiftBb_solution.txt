@@ -1,0 +1,12 @@
+Klassen WordList behöver ingen egenskriven copy-konstruktor, destruktor eller 
+tilldelningsoperator.
+
+WordList innehåller en std::vector<std::string>.
+Standardbibliotekets behållarklasser som std::vector<> sköter sin egen värde-
+semantik, de har copy-konstruktorer, destruktorer och tilldelningsoperatorer.
+Samma gäller std::string.
+
+Detta gör att den av kompilatorn genererade copy-konstruktorn för WordList,
+som gör medlemsvis kopiering, duger utmärkt. 
+Samma gäller för tilldelningsoperatorn och för destruktorn.
+ 
