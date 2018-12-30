@@ -1,0 +1,25 @@
+﻿  GameEngine.cpp
+  Main.cpp
+  Sprite.cpp
+  System.cpp
+  Generating Code...
+GameEngine.obj : error LNK2019: unresolved external symbol SDL_PollEvent referenced in function "public: void __cdecl cwing::GameEngine::run(void)" (?run@GameEngine@cwing@@QEAAXXZ)
+GameEngine.obj : error LNK2019: unresolved external symbol SDL_SetRenderDrawColor referenced in function "public: void __cdecl cwing::GameEngine::run(void)" (?run@GameEngine@cwing@@QEAAXXZ)
+GameEngine.obj : error LNK2019: unresolved external symbol SDL_RenderClear referenced in function "public: void __cdecl cwing::GameEngine::run(void)" (?run@GameEngine@cwing@@QEAAXXZ)
+GameEngine.obj : error LNK2019: unresolved external symbol SDL_RenderPresent referenced in function "public: void __cdecl cwing::GameEngine::run(void)" (?run@GameEngine@cwing@@QEAAXXZ)
+System.obj : error LNK2019: unresolved external symbol SDL_CreateWindow referenced in function "public: __cdecl cwing::System::System(void)" (??0System@cwing@@QEAA@XZ)
+System.obj : error LNK2019: unresolved external symbol SDL_DestroyWindow referenced in function "public: __cdecl cwing::System::~System(void)" (??1System@cwing@@QEAA@XZ)
+System.obj : error LNK2019: unresolved external symbol SDL_CreateRenderer referenced in function "public: __cdecl cwing::System::System(void)" (??0System@cwing@@QEAA@XZ)
+System.obj : error LNK2019: unresolved external symbol SDL_DestroyRenderer referenced in function "public: __cdecl cwing::System::~System(void)" (??1System@cwing@@QEAA@XZ)
+System.obj : error LNK2019: unresolved external symbol SDL_Init referenced in function "public: __cdecl cwing::System::System(void)" (??0System@cwing@@QEAA@XZ)
+System.obj : error LNK2019: unresolved external symbol SDL_Quit referenced in function "public: __cdecl cwing::System::~System(void)" (??1System@cwing@@QEAA@XZ)
+System.obj : error LNK2019: unresolved external symbol TTF_Init referenced in function "public: __cdecl cwing::System::System(void)" (??0System@cwing@@QEAA@XZ)
+System.obj : error LNK2019: unresolved external symbol TTF_OpenFont referenced in function "public: __cdecl cwing::System::System(void)" (??0System@cwing@@QEAA@XZ)
+System.obj : error LNK2019: unresolved external symbol TTF_CloseFont referenced in function "public: __cdecl cwing::System::~System(void)" (??1System@cwing@@QEAA@XZ)
+System.obj : error LNK2019: unresolved external symbol TTF_Quit referenced in function "public: __cdecl cwing::System::~System(void)" (??1System@cwing@@QEAA@XZ)
+MSVCRTD.lib(exe_main.obj) : error LNK2019: unresolved external symbol main referenced in function "int __cdecl invoke_main(void)" (?invoke_main@@YAHXZ)
+C:\SDL\SDL2-2.0.9\lib\x86\SDL2.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+C:\SDL\SDL2-2.0.9\lib\x86\SDL2main.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+C:\SDL\SDL_ttf-2.0.9\lib\SDL_ttf.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+C:\SDL\SDL2_image-2.0.4\lib\x86\SDL2_image.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+C:\Users\Schubert\source\repos\CprogProjekt\x64\Debug\CprogProjekt.exe : fatal error LNK1120: 15 unresolved externals
