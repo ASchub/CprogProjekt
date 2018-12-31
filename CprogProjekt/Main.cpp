@@ -8,7 +8,7 @@ using namespace cwing;
 
 int main(int argc, char** argv) {
 	GameEngine ge;
-	TestSprite* sprite = TestSprite::getInstance(100, 100, "f:/images/gubbe.bmp");
+	TestSprite* sprite = TestSprite::getInstance(100, 100, "../media/gubbe.bmp");
 	ge.add(sprite);
 	ge.run();
 	return 0;
