@@ -48,16 +48,16 @@ namespace cwing {
 				case SDL_MOUSEBUTTONUP:
 					for (Sprite* s : sprites)
 						s->mouseUp(event);
-				case SDL_KEYDOWN:
+				case SDL_KEYDOWN: {
 					for (Sprite* s : sprites)
 						s->keyDown(event);
 					break;
+				}
 				case SDL_KEYUP:
 					for (Sprite* s : sprites)
 						s->keyUp(event);
 
 				} //switch
-
 
 
 			} //inre while (spelar händelser)

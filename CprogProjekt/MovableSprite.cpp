@@ -20,9 +20,9 @@ namespace cwing {
 		switch (event.key.keysym.sym) {
 		//case SDLK_UP: cout << "keyup" << endl;
 		case SDLK_UP: setXY(getRect().x, getRect().y - 1); cout << "UP" << endl; break;
-		case SDLK_DOWN: setXY(getRect().x, getRect().y + 1); break; cout << "DOWN" << endl;
-		case SDLK_RIGHT: setXY(getRect().x + 1, getRect().y); break; cout << "RIGHT" << endl;
-		case SDLK_LEFT: setXY(getRect().x - 1, getRect().y); break; cout << "LEFT" << endl;
+		case SDLK_DOWN: setXY(getRect().x, getRect().y + 1); cout << "DOWN" << endl; break;
+		case SDLK_RIGHT: setXY(getRect().x + 1, getRect().y); cout << "RIGHT" << endl; break;
+		case SDLK_LEFT: setXY(getRect().x - 1, getRect().y); cout << "LEFT" << endl; break;
 		}
 
 	}
