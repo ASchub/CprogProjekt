@@ -1,6 +1,7 @@
 #include "GameEngine.h"
 #include <SDL.h>
 #include "System.h"
+#include <iostream>
 
 namespace cwing {
 
@@ -35,6 +36,7 @@ namespace cwing {
 		bool quit = false; //styr när huvudloopen ska avbrytas.
 
 		while (!quit) {
+			cout << "loop BEGIN" << endl;
 			SDL_Event event;
 			while (SDL_PollEvent(&event)) {
 				//lång switchsats som kollar eventhändelser.
@@ -49,6 +51,7 @@ namespace cwing {
 				case SDL_KEYDOWN:
 					for (Sprite* s : sprites)
 						s->keyDown(event);
+					break;
 				case SDL_KEYUP:
 					for (Sprite* s : sprites)
 						s->keyUp(event);
@@ -86,13 +89,13 @@ namespace cwing {
 			//behöver rita alla komponenter, ifall något event ändrar på någon grafik.
 			SDL_RenderClear(sys.getRen()); //Behöver först rensa allt gammalt om man ska rita på nytt
 			//nu går vi igenom alla komponenter och ritar ut dem
+			cout << "END loop, DRAW" << endl;
 			for (Sprite* s : sprites)
 				s->draw();
 			SDL_RenderPresent(sys.getRen());
 
 		} //yttre while
 
-
-	}
+	} //run
 
 } //cwing

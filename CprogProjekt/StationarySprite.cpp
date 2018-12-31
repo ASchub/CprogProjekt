@@ -18,8 +18,4 @@ namespace cwing {
 	}
 
 
-	StationarySprite::~StationarySprite()
-	{
-	}
-
 } //cwing
