@@ -7,8 +7,8 @@ namespace cwing {
 	{
 	public:
 		virtual ~Sprite() { SDL_DestroyTexture(texture); };
-		virtual void handleCollision() {}
 		//då denna är för subklasserna, dvs virtual, ej abstrakt (=0) men vi deklarerar en tom metod för de subklasser som inte vill ha en
+		virtual void handleCollision(const Sprite* other) {}
 		virtual void mouseDown(const SDL_Event& event) {}
 		virtual void mouseUp(const SDL_Event& event) {}
 		virtual void keyDown(const SDL_Event& event) {}

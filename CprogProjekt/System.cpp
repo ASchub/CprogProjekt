@@ -33,6 +33,7 @@ namespace cwing {
 		SDL_Quit();
 	}
 
+	Uint32 BASE_SPEED = 5;
 	System sys; //definerar ett objekt, globalt så deklareras som extern i header filen
 
 } //cwing

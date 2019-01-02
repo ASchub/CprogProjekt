@@ -6,6 +6,7 @@
 namespace cwing {
 	Uint32 maxFps = 70; //initial value, TODO - change Fps
 	Uint32 nextTick = SDL_GetTicks(); //initial value, updates every tick
+	
 
 	GameEngine::GameEngine()
 	{
@@ -48,7 +49,7 @@ namespace cwing {
 
 				npcEvents();
 
-				//collisionDetection();
+				collisionDetection();
 
 				/*
 				Här borde andra händelser ske, som att fiender rör sig m.m.
@@ -71,10 +72,9 @@ namespace cwing {
 		for (Sprite* a : sprites) {
 			for (Sprite* b : sprites) {
 				if (a != b) {
-					cout << "checkCollision" << endl;
 					if (checkCollision(a, b)) {
-						a->handleCollision();
-						b->handleCollision();
+						a->handleCollision(b);
+						b->handleCollision(a);
 					}
 				}
 			}
@@ -96,9 +96,9 @@ namespace cwing {
 
 		//Calculate the sides of rect B
 		leftB = b->getRect().x;
-		rightB = b->getRect().x + a->getRect().w;
+		rightB = b->getRect().x + b->getRect().w;
 		topB = b->getRect().y;
-		bottomB = b->getRect().y + a->getRect().h;
+		bottomB = b->getRect().y + b->getRect().h;
 
 		//If any of the sides from A are outside of B
 		if ((bottomA <= topB) || (topA >= bottomB) || (rightA <= leftB) || (leftA >= rightB))

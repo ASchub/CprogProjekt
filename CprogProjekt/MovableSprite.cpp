@@ -5,7 +5,7 @@
 using namespace std;
 
 namespace cwing {
-	int speed = 5; //max movement per tick, magic number
+	int speed = BASE_SPEED; //max movement per tick, magic number
 	int movedThisTick = 0; //resets every tick
 
 	MovableSprite* MovableSprite::getInstance(int x, int y, const char path[]) {
@@ -57,8 +57,48 @@ namespace cwing {
 		SDL_RenderCopy(sys.getRen(), getTexture(), NULL, &getRect());
 	}
 
-	void MovableSprite::handleCollision() {
-		cout << "Movable Sprite collided" << endl;
+	void MovableSprite::handleCollision(const Sprite* other) {
+		Uint32 BounceRate = BASE_SPEED * 3;
+		int left, leftO;
+		int right, rightO;
+		int top, topO;
+		int bottom, bottomO;
+
+		//Calculate the sides of this
+		left = getRect().x;
+		right = getRect().x + getRect().w;
+		top = getRect().y;
+		bottom = getRect().y + getRect().h;
+
+		//Calculate the sides of rect B
+		leftO = other->getRect().x;
+		rightO = other->getRect().x + other->getRect().w;
+		topO = other->getRect().y;
+		bottomO = other->getRect().y + other->getRect().h;
+
+		//bounce off objekt.
+
+		//If any of the sides from A are outside of B
+		if (bottom <= topO) {
+			cout << "something happened" << endl;
+			setXY(getRect().x, getRect().y - BounceRate);
+		}
+		if (top >= bottomO) {
+			cout << "something happened" << endl;
+			setXY(getRect().x, getRect().y + BounceRate);
+		}
+		if (right <= leftO) {
+			cout << "something happened" << endl;
+			setXY(getRect().x - BounceRate, getRect().y);
+		}
+		if (left >= rightO) {
+			cout << "something happened" << endl;
+			setXY(getRect().x + BounceRate, getRect().y);
+		}
+
+		//If none of the sides from A are outside B
+
 	}
+
 
 } //cwing

@@ -9,10 +9,10 @@ namespace cwing {
 	{
 	public:
 		static MovableSprite* getInstance(int x, int y, const char path[]); //only supports BMP paths atm.
+		void handleCollision(const Sprite* other);
 		void draw() const;
 		void keyDown(const SDL_Event& event);
 		void resetMoveThisTick();
-		void handleCollision();
 	protected:
 		MovableSprite(int x, int y, const char path[]);
 	private:

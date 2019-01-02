@@ -18,8 +18,5 @@ namespace cwing {
 		SDL_RenderCopy(sys.getRen(), getTexture(), NULL, &getRect());
 	}
 
-	void StationarySprite::handleCollision() {
-		cout << "Stationary Sprite collided" << endl;
-	}
 
 } //cwing
