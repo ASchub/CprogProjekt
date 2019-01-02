@@ -12,7 +12,8 @@ namespace cwing {
 		virtual void mouseUp(const SDL_Event& event) {}
 		virtual void keyDown(const SDL_Event& event) {}
 		virtual void keyUp(const SDL_Event& event) {}
-		virtual void resetMoveThisTick() {};
+		virtual void resetMoveThisTick() {}
+		virtual void tick() {}
 		SDL_Rect getRect() const { return rect; }
 		virtual void draw() const = 0; //helt virtuel och abstrakt, alla objekt måste ritas ut så kan inte göra tom deklaration (=0)
 		Sprite(const Sprite&) = delete; //Copy konstruktorn, ska ej finnas då vi inte vill kunna skapa objekt av denna abstrakta klass

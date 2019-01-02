@@ -4,8 +4,10 @@
 #include <iostream>
 
 namespace cwing {
-	Uint32 maxFps = 70; //initial value, TODO - change Fps
-	Uint32 nextTick = SDL_GetTicks(); //initial value, updates every tick
+	int maxFps = 70; //initiellt värde,magiskt nummer
+	int minFps = 5; // initiellt värde, magiskt nummer
+	Uint32 nextTick = SDL_GetTicks(); //initiellt värde, uppdateras varje tick //TODO - ska vara en pointer?
+	Uint32 now;
 
 	GameEngine::GameEngine()
 	{
@@ -18,7 +20,7 @@ namespace cwing {
 	GameEngine::~GameEngine() 
 	{
 		for (Sprite *s : sprites) //kan va auto
-			delete s;
+			delete s; //TODO: gives error at shutdown. Hur funkar remove i loop i C++? Behöver vi inte en iterator?
 		for (Sprite *s : added) 
 			delete s;
 		for (Sprite *s : removed) 
@@ -33,39 +35,25 @@ namespace cwing {
 		removed.push_back(s);
 	}
 
+	void GameEngine::setMaxFps(int i) {
+		maxFps = i;
+	}
+
+	void GameEngine::setMinFps(int i) {
+		minFps = i;
+	}
+
 	void GameEngine::run() {
 		SDL_SetRenderDrawColor(sys.getRen(), 255, 255, 255, 255);
 		bool quit = false; //styr när huvudloopen ska avbrytas.
 
 		while (!quit) {
-			Uint32 now = SDL_GetTicks();
+			now = SDL_GetTicks();
 
 			if (nextTick <= now) {
 				//cout << "loop BEGIN" << endl;
-				SDL_Event event;
-				while (SDL_PollEvent(&event)) {
-					//lång switchsats som kollar eventhändelser.
-					switch (event.type) {
-					case SDL_QUIT: quit = true; break;
-					case SDL_MOUSEBUTTONDOWN:
-						for (Sprite* s : sprites) //kan va auto
-							s->mouseDown(event); //funk i component som kollar om eventet är till sig.
-					case SDL_MOUSEBUTTONUP:
-						for (Sprite* s : sprites)
-							s->mouseUp(event);
-					case SDL_KEYDOWN: {
-						for (Sprite* s : sprites)
-							s->keyDown(event);
-						break;
-					}
-					case SDL_KEYUP:
-						for (Sprite* s : sprites)
-							s->keyUp(event);
 
-					} //switch
-
-
-				} //inre while (spelar händelser)
+				quit = getAndActOnUserInput(); //returnerar sant om SDL_QUIT har kallats på, annars returnerar det sant.
 
 				/*
 				Här ELLER ovanför inre while borde andra händelser ske, som att fiender rör sig m.m.
@@ -111,5 +99,35 @@ namespace cwing {
 		} //yttre while
 
 	} //run
+
+	bool GameEngine::getAndActOnUserInput() {
+		bool quit = false;
+		SDL_Event event;
+		while (SDL_PollEvent(&event)) {
+			//lång switchsats som kollar eventhändelser.
+			switch (event.type) {
+			case SDL_QUIT: quit = true; 
+				return true; break;
+			case SDL_MOUSEBUTTONDOWN:
+				for (Sprite* s : sprites) //kan va auto
+					s->mouseDown(event); //funk i component som kollar om eventet är till sig.
+			case SDL_MOUSEBUTTONUP:
+				for (Sprite* s : sprites)
+					s->mouseUp(event);
+			case SDL_KEYDOWN: {
+				for (Sprite* s : sprites)
+					s->keyDown(event);
+				break;
+			}
+			case SDL_KEYUP:
+				for (Sprite* s : sprites)
+					s->keyUp(event);
+
+			} //switch
+
+
+		} //inre while (spelar händelser)
+		return false;
+	}
 
 } //cwing
