@@ -23,25 +23,25 @@ namespace cwing {
 			//case SDLK_UP: cout << "keyup" << endl;
 		case SDLK_UP:
 			if (movedThisTick < speed) {
-				setXY(getRect().x, getRect().y - 1); cout << "UP" << endl;
+				setXY(getRect().x, getRect().y - 1); //cout << "UP" << endl;
 				movedThisTick++;
 			} //move if max movement is not already reached
 			break;
 		case SDLK_DOWN:
 			if (movedThisTick < speed) {
-				setXY(getRect().x, getRect().y + 1); cout << "DOWN" << endl;
+				setXY(getRect().x, getRect().y + 1); //cout << "DOWN" << endl;
 				movedThisTick++;
 			}//move if max movement is not already reached
 			break;
 		case SDLK_RIGHT:
 			if (movedThisTick < speed) {
-				setXY(getRect().x + 1, getRect().y); cout << "RIGHT" << endl;
+				setXY(getRect().x + 1, getRect().y); //cout << "RIGHT" << endl;
 				movedThisTick++;
 			}//move if max movement is not already reached
 			break;
 		case SDLK_LEFT:
 			if (movedThisTick < speed) {
-				setXY(getRect().x - 1, getRect().y); cout << "LEFT" << endl;
+				setXY(getRect().x - 1, getRect().y); //cout << "LEFT" << endl;
 				movedThisTick++;
 			}//move if max movement is not already reached
 			break;

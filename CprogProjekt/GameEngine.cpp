@@ -4,9 +4,12 @@
 #include <iostream>
 
 namespace cwing {
-	Uint32 maxFps = 70; //initial value, TODO - change Fps
-	Uint32 nextTick = SDL_GetTicks(); //initial value, updates every tick
-	
+
+	int maxFps = 70; //initiellt värde,magiskt nummer
+	int minFps = 5; // initiellt värde, magiskt nummer
+	Uint32 nextTick = SDL_GetTicks(); //initiellt värde, uppdateras varje tick //TODO - ska vara en pointer?
+	Uint32 now;
+	SDL_Event* event = nullptr;
 
 	GameEngine::GameEngine()
 	{
@@ -19,7 +22,7 @@ namespace cwing {
 	GameEngine::~GameEngine() 
 	{
 		for (Sprite *s : sprites) //kan va auto
-			delete s;
+			delete s; //TODO: gives error at shutdown. Hur funkar remove i loop i C++? Behöver vi inte en iterator?
 		for (Sprite *s : added) 
 			delete s;
 		for (Sprite *s : removed) 
@@ -34,15 +37,24 @@ namespace cwing {
 		removed.push_back(s);
 	}
 
+	void GameEngine::setMaxFps(int i) {
+		maxFps = i;
+	}
+
+	void GameEngine::setMinFps(int i) {
+		minFps = i;
+	}
+
 	void GameEngine::run() {
 		SDL_SetRenderDrawColor(sys.getRen(), 255, 255, 255, 255);
 		bool quit = false; //styr när huvudloopen ska avbrytas.
 
 		while (!quit) {
-			Uint32 now = SDL_GetTicks();
+			now = SDL_GetTicks();
 
 			if (nextTick <= now) {
 				//cout << "loop BEGIN" << endl;
+
 				quit = handleEvents();
 				if (quit)
 					break;
@@ -112,9 +124,6 @@ namespace cwing {
 	}
 
 	void GameEngine::prepareNextTick() {
-		for (Sprite* s : sprites) {
-			s->resetMoveThisTick();
-		} //resets movement as prep for next tick
 
 		//tar bort alla sprites som försvunnit under händelseförloppen., detta görs i slutet av loopen efter alla händelser har hanterats.
 		for (Sprite* s : removed) {
@@ -126,6 +135,10 @@ namespace cwing {
 				else
 					it++; //får bara flytta fram iteratorn om vi inte tar bort ett element, eftersom vi redan får pekaren till nästa via erase.
 		}
+
+		for (Sprite* s : sprites) {
+			s->resetMoveThisTick();
+		} //resets movement as prep for next tick,efter removed pga onödigt att reset:a objekt som tas bort
 
 		removed.clear(); //nu när vi tagit bort allt rensar vi removed så vi kan använda på nytt i nästa ticks.
 
@@ -146,7 +159,6 @@ namespace cwing {
 	}
 
 	bool GameEngine::handleEvents() { //returns TRUE if quit should be true
-		SDL_Event event;
 		while (SDL_PollEvent(&event)) {
 			//lång switchsats som kollar eventhändelser.
 			switch (event.type) {
@@ -171,6 +183,5 @@ namespace cwing {
 		} //inre while (spelar händelser)
 		return false;
 	}
-	
 
 } //cwing
