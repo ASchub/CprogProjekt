@@ -77,6 +77,9 @@ namespace cwing {
 	}
 
 	void MovableSprite::handleCollision(const Sprite* other) {
+		setXY(300, 100);
+
+		/*
 		int BounceRate = speed * 3;
 		int left, leftO;
 		int right, rightO;
@@ -116,6 +119,7 @@ namespace cwing {
 		}
 
 		//If none of the sides from A are outside B
+		*/
 
 	}
 

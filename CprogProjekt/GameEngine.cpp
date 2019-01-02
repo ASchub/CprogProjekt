@@ -90,14 +90,43 @@ namespace cwing {
 			for (Sprite* b : sprites) {
 				if (a != b) {
 					if (checkCollision(a, b)) {
-						//a->handleCollision(b);
-						//b->handleCollision(a);
+						a->handleCollision(b);
+						b->handleCollision(a);
 					}
 				}
 			}
 		}
 	}
+	bool GameEngine::checkCollision(Sprite* a, Sprite* b) { //returns true if objects collided.
+		//The sides of the rectangles
+		int leftA, leftB;
+		int rightA, rightB;
+		int topA, topB;
+		int bottomA, bottomB;
+		SDL_Rect* aRect = &a->getRect();
+		SDL_Rect* bRect = &b->getRect();
 
+		//Calculate the sides of rect A
+		leftA = aRect->x;
+		rightA = aRect->x + aRect->w;
+		topA = aRect->y;
+		bottomA = aRect->y + aRect->h;
+
+		//Calculate the sides of rect B
+		leftB = bRect->x;
+		rightB = bRect->x + bRect->w;
+		topB = bRect->y;
+		bottomB = bRect->y + bRect->h;
+
+		//If any of the sides from A are outside of B
+		if ((bottomA <= topB) || (topA >= bottomB) || (rightA <= leftB) || (leftA >= rightB))
+			return false;
+		//If none of the sides from A are outside B
+		return true;
+
+	}
+
+	/*
 	bool GameEngine::checkCollision(Sprite* a, Sprite* b) { //returns true if objects collided.
 		//The sides of the rectangles
 		int leftA, leftB;
@@ -123,6 +152,7 @@ namespace cwing {
 		//If none of the sides from A are outside B
 		return true;
 	}
+	*/
 
 	void GameEngine::npcEvents() {
 
