@@ -5,14 +5,15 @@
 
 namespace cwing {
 
-	int maxFps = 70; //initiellt värde,magiskt nummer
-	int minFps = 5; // initiellt värde, magiskt nummer
+ // initiellt värde, magiskt nummer
 	Uint32 nextTick = SDL_GetTicks(); //initiellt värde, uppdateras varje tick //TODO - ska vara en pointer?
 	Uint32 now;
 	SDL_Event* event = nullptr;
 
 	GameEngine::GameEngine()
 	{
+		maxFps = 70;
+		minFps = 5;
 	}
 
 	/*
@@ -21,21 +22,16 @@ namespace cwing {
 	*/
 	GameEngine::~GameEngine() 
 	{
-
-		for (auto it = sprites.begin(); it != sprites.end();)
-			it = sprites.erase(it); //erase returnerar en iterator till nästa element, så vi kan hoppa över det vi tar bort.
-		for (auto it = added.begin(); it != added.end();)
-			it = sprites.erase(it);
-		for (auto it = removed.begin(); it != removed.end();)
-			it = sprites.erase(it);
-		/*
-		for (Sprite *s : sprites) //kan va auto
-			delete s; //TODO: gives error at shutdown. Hur funkar remove i loop i C++? Behöver vi inte en iterator?
-		for (Sprite *s : added) 
-			delete s;
-		for (Sprite *s : removed) 
-			delete s;
-			*/
+		while (!sprites.empty()) {
+			sprites.pop_back();
+		}
+		while (!added.empty()) {
+			added.pop_back();
+		}
+		while (!removed.empty()) {
+			removed.pop_back();
+		}
+			
 	}
 
 	void GameEngine::add(Sprite* s) {
@@ -70,7 +66,7 @@ namespace cwing {
 
 				npcEvents();
 
-				collisionDetection();
+				//collisionDetection();
 
 				/*
 				Här borde andra händelser ske, som att fiender rör sig m.m.

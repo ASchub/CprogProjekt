@@ -25,6 +25,7 @@ namespace cwing {
 		int maxFps;
 		int minFps;
 		SDL_Event event;
+
 	};
 
 	
