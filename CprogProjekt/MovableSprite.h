@@ -13,6 +13,7 @@ namespace cwing {
 		void draw() const;
 		void keyDown(const SDL_Event& event);
 		void resetMoveThisTick();
+		void move();
 	protected:
 		MovableSprite(int x, int y, const char path[]);
 	private:

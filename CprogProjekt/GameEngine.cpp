@@ -8,7 +8,7 @@ namespace cwing {
  // initiellt värde, magiskt nummer
 	Uint32 nextTick = SDL_GetTicks(); //initiellt värde, uppdateras varje tick //TODO - ska vara en pointer?
 	Uint32 now;
-	SDL_Event* event = nullptr;
+	//SDL_Event* event = nullptr;
 
 	GameEngine::GameEngine()
 	{
@@ -66,7 +66,7 @@ namespace cwing {
 
 				npcEvents();
 
-				//collisionDetection();
+				collisionDetection();
 
 				/*
 				Här borde andra händelser ske, som att fiender rör sig m.m.

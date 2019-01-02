@@ -6,7 +6,9 @@ using namespace std;
 
 namespace cwing {
 	int speed = BASE_SPEED; //max movement per tick, magic number
-	int movedThisTick = 0; //resets every tick
+	bool movedThisTick = false; //resets every tick
+	int xVel = 0;
+	int yVel = 0;
 
 	MovableSprite* MovableSprite::getInstance(int x, int y, const char path[]) {
 		return new MovableSprite(x, y, path);
@@ -22,35 +24,52 @@ namespace cwing {
 		switch (event.key.keysym.sym) {
 			//case SDLK_UP: cout << "keyup" << endl;
 		case SDLK_UP:
-			if (movedThisTick < speed) {
-				setXY(getRect().x, getRect().y - 1); //cout << "UP" << endl;
-				movedThisTick++;
+			if (!movedThisTick) {
+				yVel--;
+				move();
+				movedThisTick = true;
 			} //move if max movement is not already reached
 			break;
 		case SDLK_DOWN:
-			if (movedThisTick < speed) {
-				setXY(getRect().x, getRect().y + 1); //cout << "DOWN" << endl;
-				movedThisTick++;
+			if (!movedThisTick) {
+				yVel++;
+				move();
+				movedThisTick = true;
 			}//move if max movement is not already reached
 			break;
 		case SDLK_RIGHT:
-			if (movedThisTick < speed) {
-				setXY(getRect().x + 1, getRect().y); //cout << "RIGHT" << endl;
-				movedThisTick++;
+			if (!movedThisTick) {
+				xVel++;
+				move();
+				movedThisTick = true;
 			}//move if max movement is not already reached
 			break;
 		case SDLK_LEFT:
-			if (movedThisTick < speed) {
-				setXY(getRect().x - 1, getRect().y); //cout << "LEFT" << endl;
-				movedThisTick++;
+			if (!movedThisTick) {
+				xVel--;
+				move();
+				movedThisTick = true;
 			}//move if max movement is not already reached
 			break;
-		}
+		} //switch
+	}
+
+	void MovableSprite::move() {
+		if(yVel > 0)
+			setXY(getRect().x, getRect().y + speed);
+		else if(yVel < 0)
+			setXY(getRect().x, getRect().y - speed);
+		else if(xVel > 0)
+			setXY(getRect().x + speed, getRect().y);
+		else if(xVel < 0)
+			setXY(getRect().x - speed, getRect().y);
 
 	}
 
 	void MovableSprite::resetMoveThisTick() {
-		movedThisTick = 0;
+		movedThisTick = false;
+		yVel = 0;
+		xVel = 0;
 	}
 
 	void MovableSprite::draw() const {
@@ -58,7 +77,7 @@ namespace cwing {
 	}
 
 	void MovableSprite::handleCollision(const Sprite* other) {
-		Uint32 BounceRate = BASE_SPEED * 3;
+		int BounceRate = speed * 3;
 		int left, leftO;
 		int right, rightO;
 		int top, topO;
