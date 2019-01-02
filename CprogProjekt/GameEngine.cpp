@@ -46,11 +46,16 @@ namespace cwing {
 				if (quit)
 					break;
 
+				npcEvents();
+
+				//collisionDetection();
+
 				/*
 				Här borde andra händelser ske, som att fiender rör sig m.m.
 				Detta markerar slutet på interaktioner, efter detta tar vi bort och lägger till saker samt ritar om och förbereder för nästa tick.
 				Gör inga händelsehanteringar efter denna punkt!
 				*/
+
 
 				prepareNextTick();
 
@@ -63,7 +68,43 @@ namespace cwing {
 	} //run
 
 	void GameEngine::collisionDetection() {
+		for (Sprite* a : sprites) {
+			for (Sprite* b : sprites) {
+				if (a != b) {
+					cout << "checkCollision" << endl;
+					if (checkCollision(a, b)) {
+						a->handleCollision();
+						b->handleCollision();
+					}
+				}
+			}
+		}
+	}
 
+	bool GameEngine::checkCollision(Sprite* a, Sprite* b) { //returns true if objects collided.
+		//The sides of the rectangles
+		int leftA, leftB;
+		int rightA, rightB;
+		int topA, topB;
+		int bottomA, bottomB;
+
+		//Calculate the sides of rect A
+		leftA = a->getRect().x;
+		rightA = a->getRect().x + a->getRect().w;
+		topA = a->getRect().y;
+		bottomA = a->getRect().y + a->getRect().h;
+
+		//Calculate the sides of rect B
+		leftB = b->getRect().x;
+		rightB = b->getRect().x + a->getRect().w;
+		topB = b->getRect().y;
+		bottomB = b->getRect().y + a->getRect().h;
+
+		//If any of the sides from A are outside of B
+		if ((bottomA <= topB) || (topA >= bottomB) || (rightA <= leftB) || (leftA >= rightB))
+			return false;
+		//If none of the sides from A are outside B
+		return true;
 	}
 
 	void GameEngine::npcEvents() {

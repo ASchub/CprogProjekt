@@ -10,6 +10,7 @@ namespace cwing {
 	public:
 		static StationarySprite* getInstance(int x, int y, const char path[]); //only supports BMP paths atm.
 		void draw() const;
+		void handleCollision();
 	protected:
 		StationarySprite(int x, int y, const char path[]);
 	private:

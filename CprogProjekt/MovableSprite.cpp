@@ -57,4 +57,8 @@ namespace cwing {
 		SDL_RenderCopy(sys.getRen(), getTexture(), NULL, &getRect());
 	}
 
+	void MovableSprite::handleCollision() {
+		cout << "Movable Sprite collided" << endl;
+	}
+
 } //cwing
