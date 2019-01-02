@@ -21,12 +21,21 @@ namespace cwing {
 	*/
 	GameEngine::~GameEngine() 
 	{
+
+		for (auto it = sprites.begin(); it != sprites.end();)
+			it = sprites.erase(it); //erase returnerar en iterator till nästa element, så vi kan hoppa över det vi tar bort.
+		for (auto it = added.begin(); it != added.end();)
+			it = sprites.erase(it);
+		for (auto it = removed.begin(); it != removed.end();)
+			it = sprites.erase(it);
+		/*
 		for (Sprite *s : sprites) //kan va auto
 			delete s; //TODO: gives error at shutdown. Hur funkar remove i loop i C++? Behöver vi inte en iterator?
 		for (Sprite *s : added) 
 			delete s;
 		for (Sprite *s : removed) 
 			delete s;
+			*/
 	}
 
 	void GameEngine::add(Sprite* s) {
@@ -85,8 +94,8 @@ namespace cwing {
 			for (Sprite* b : sprites) {
 				if (a != b) {
 					if (checkCollision(a, b)) {
-						a->handleCollision(b);
-						b->handleCollision(a);
+						//a->handleCollision(b);
+						//b->handleCollision(a);
 					}
 				}
 			}
