@@ -12,6 +12,10 @@ namespace cwing {
 		void run(); //startar spelloopen
 		~GameEngine();
 	private:
+		bool handleEvents(); //returns TRUE if quit should be true
+		void prepareNextTick();
+		void npcEvents();
+		void collisionDetection();
 		std::vector<Sprite*> sprites; //behöver vara pekare till sprite då det är en superklass, om man skickar en subklass och den tar emot hela objektet slicar den ned objektet till enbart sprite..
 		std::vector<Sprite*> added, removed; //för att ta bort saker under körning, skapar seperata vektorer för att hålla koll på vad som ska raderas/läggas på vid nästa tick
 
