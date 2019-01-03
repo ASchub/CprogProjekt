@@ -38,6 +38,10 @@ namespace cwing {
 		added.push_back(s);
 	}
 
+	void GameEngine::add(Hotkey* h) {
+		hotkeys.push_back(h);
+	}
+
 	void GameEngine::remove(Sprite *s) {
 		removed.push_back(s);
 	}
@@ -66,7 +70,9 @@ namespace cwing {
 
 				npcEvents();
 
-				collisionDetection();
+				collisionDetection(); //needs work
+
+				checkHotkeys();
 
 				/*
 				Här borde andra händelser ske, som att fiender rör sig m.m.
@@ -84,6 +90,15 @@ namespace cwing {
 		} //yttre while
 
 	} //run
+
+	void GameEngine::checkHotkeys() {
+		while (SDL_PollEvent(&event)) {
+			for (Hotkey* h : hotkeys) {
+				if (event.key.keysym.sym == h->getKey())
+					h->perform();
+			}
+		} //inre while (spelar händelser)
+	}
 
 	void GameEngine::collisionDetection() {
 		for (Sprite* a : sprites) {
@@ -125,34 +140,6 @@ namespace cwing {
 		return true;
 
 	}
-
-	/*
-	bool GameEngine::checkCollision(Sprite* a, Sprite* b) { //returns true if objects collided.
-		//The sides of the rectangles
-		int leftA, leftB;
-		int rightA, rightB;
-		int topA, topB;
-		int bottomA, bottomB;
-
-		//Calculate the sides of rect A
-		leftA = a->getRect().x;
-		rightA = a->getRect().x + a->getRect().w;
-		topA = a->getRect().y;
-		bottomA = a->getRect().y + a->getRect().h;
-
-		//Calculate the sides of rect B
-		leftB = b->getRect().x;
-		rightB = b->getRect().x + b->getRect().w;
-		topB = b->getRect().y;
-		bottomB = b->getRect().y + b->getRect().h;
-
-		//If any of the sides from A are outside of B
-		if ((bottomA <= topB) || (topA >= bottomB) || (rightA <= leftB) || (leftA >= rightB))
-			return false;
-		//If none of the sides from A are outside B
-		return true;
-	}
-	*/
 
 	void GameEngine::npcEvents() {
 
