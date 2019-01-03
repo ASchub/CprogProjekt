@@ -15,7 +15,7 @@ namespace cwing {
 		virtual void keyUp(const SDL_Event& event) {}
 		virtual void resetMoveThisTick() {}
 		virtual void tick() {}
-		SDL_Rect getRect() const { return rect; }
+		SDL_Rect* getRect() const { return rect; }
 		virtual void draw() const = 0; //helt virtuel och abstrakt, alla objekt måste ritas ut så kan inte göra tom deklaration (=0)
 		Sprite(const Sprite&) = delete; //Copy konstruktorn, ska ej finnas då vi inte vill kunna skapa objekt av denna abstrakta klass
 		const Sprite& operator=(const Sprite&) = delete; //samma som ovan, ingen operator överlagring
@@ -25,7 +25,7 @@ namespace cwing {
 		void setWH(int w, int h); //bör kunna ändra storlek/position för spriten
 		void setXY(int x, int y);
 	private:
-		SDL_Rect rect; //definitionen av en rektangel, som kommer innehålla våran sprite
+		SDL_Rect* rect; //definitionen av en rektangel, som kommer innehålla våran sprite
 		SDL_Texture* texture = nullptr;
 		void makeTexture(const char path[]);
 	};

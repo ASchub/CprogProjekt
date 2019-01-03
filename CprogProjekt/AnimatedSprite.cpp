@@ -18,26 +18,16 @@ namespace cwing {
 	{
 		setWH(14, 20);
 		srcrect = { 0,0,14,20 };
-		/*loadImageIntoFrames();
-		cout << "AnimatedSpriteConstructor" << endl;*/
 	}
-
-	/*void AnimatedSprite::loadImageIntoFrames() {
-		for (int i = 0; i < nrOfFrames; i++) {
-			SDL_Rect rect = { i * 14,0,14,20 };
-			frames[i] = &rect;
-			cout << "Loaded into frame" << endl;
-		}
-	}*/
 
 	void AnimatedSprite::draw() const {
 			if (currentFrame >= nrOfFrames) {
 				currentFrame = 0;
 			}
 			srcrect.x = (currentFrame * 14);
-			SDL_RenderCopy(sys.getRen(), getTexture(), &srcrect, &getRect());
+			SDL_RenderCopy(sys.getRen(), getTexture(), &srcrect, getRect());
 
-			if (delay > 1000) {
+			if (delay > 40) {
 				currentFrame++;
 				delay = 0;
 			}

@@ -14,9 +14,6 @@ namespace cwing {
 		AnimatedSprite(int x, int y, const char path[]);
 		void draw() const;
 	private:
-		//void makeTexture(const char path[]);
-		
-		//void loadImageIntoFrames();
 	}; //class
 
 } //cwing

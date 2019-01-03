@@ -3,14 +3,19 @@
 
 namespace cwing {
 
-	Sprite::Sprite(int x, int y, int w, int h, const char path[]) : rect{ x,y,w,h }
+	Sprite::Sprite(int x, int y, int w, int h, const char path[])
 	{
+		rect = new SDL_Rect();
+		rect->x = x;
+		rect->y = y;
+		rect->w = w;
+		rect->h = h;
 		makeTexture(path);
 	}
 
 	void Sprite::setWH(int w, int h) {
-		rect.w = w;
-		rect.h = h;
+		rect->w = w;
+		rect->h = h;
 	}
 
 	void Sprite::makeTexture(const char path[]) {
@@ -24,8 +29,8 @@ namespace cwing {
 	}
 
 	void Sprite::setXY(int x, int y) {
-		rect.x = x;
-		rect.y = y;
+		rect->x = x;
+		rect->y = y;
 	}
 
 } //cwing

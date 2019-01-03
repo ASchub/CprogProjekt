@@ -15,7 +15,7 @@ namespace cwing {
 	}
 
 	void StationarySprite::draw() const {
-		SDL_RenderCopy(sys.getRen(), getTexture(), NULL, &getRect());
+		SDL_RenderCopy(sys.getRen(), getTexture(), NULL, getRect());
 	}
 
 

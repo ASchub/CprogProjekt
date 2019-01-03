@@ -118,8 +118,8 @@ namespace cwing {
 		int rightA, rightB;
 		int topA, topB;
 		int bottomA, bottomB;
-		SDL_Rect* aRect = &a->getRect();
-		SDL_Rect* bRect = &b->getRect();
+		SDL_Rect* aRect = a->getRect();
+		SDL_Rect* bRect = b->getRect();
 
 		//Calculate the sides of rect A
 		leftA = aRect->x;
@@ -157,6 +157,9 @@ namespace cwing {
 				else
 					it++; //får bara flytta fram iteratorn om vi inte tar bort ett element, eftersom vi redan får pekaren till nästa via erase.
 		}
+		while (!removed.empty()) {
+			removed.pop_back();
+		}
 
 		for (Sprite* s : sprites) {
 			s->resetMoveThisTick();
@@ -167,6 +170,9 @@ namespace cwing {
 		//Lägger till saker som tillkommit under händelseförloppet
 		for (Sprite* s : added) {
 			sprites.push_back(s);
+		}
+		while (!added.empty()) {
+			added.pop_back();
 		}
 
 		//behöver rita alla komponenter, ifall något event ändrar på någon grafik.

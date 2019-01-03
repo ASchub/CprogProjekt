@@ -56,13 +56,13 @@ namespace cwing {
 
 	void MovableSprite::move() {
 		if(yVel > 0)
-			setXY(getRect().x, getRect().y + speed);
+			setXY(getRect()->x, getRect()->y + speed);
 		else if(yVel < 0)
-			setXY(getRect().x, getRect().y - speed);
+			setXY(getRect()->x, getRect()->y - speed);
 		else if(xVel > 0)
-			setXY(getRect().x + speed, getRect().y);
+			setXY(getRect()->x + speed, getRect()->y);
 		else if(xVel < 0)
-			setXY(getRect().x - speed, getRect().y);
+			setXY(getRect()->x - speed, getRect()->y);
 
 	}
 
@@ -73,7 +73,7 @@ namespace cwing {
 	}
 
 	void MovableSprite::draw() const {
-		SDL_RenderCopy(sys.getRen(), getTexture(), NULL, &getRect());
+		SDL_RenderCopy(sys.getRen(), getTexture(), NULL, getRect());
 	}
 
 	void MovableSprite::handleCollision(const Sprite* other) {
