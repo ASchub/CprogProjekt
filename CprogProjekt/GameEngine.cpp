@@ -8,7 +8,6 @@ namespace cwing {
  // initiellt värde, magiskt nummer
 	Uint32 nextTick = SDL_GetTicks(); //initiellt värde, uppdateras varje tick //TODO - ska vara en pointer?
 	Uint32 now;
-	//SDL_Event* event = nullptr;
 
 	GameEngine::GameEngine()
 	{
@@ -183,7 +182,20 @@ namespace cwing {
 			s->draw();
 		SDL_RenderPresent(sys.getRen());
 
+		//kör gravitation inför nästa tick, förutsatt att gravitationen är på
+		if (gravity) {
+			runGravity();
+		}
+
 		nextTick += (1000 / maxFps);
+	}
+
+	void GameEngine::runGravity() {
+		for (Sprite* s : sprites) {
+			if (s->isAffectedByGravity()) {
+				s->fall(gravityStrength);
+			}
+		}
 	}
 
 	bool GameEngine::handleEvents() { //returns TRUE if quit should be true

@@ -22,10 +22,13 @@ int main(int argc, char** argv) {
 	GameEngine ge;
 	StationarySprite* sSprite = StationarySprite::getInstance(100, 100, "./media/gubbe.bmp");
 	MovableSprite* mSprite = MovableSprite::getInstance(300, 100, "./media/gubbe.bmp");
-	AnimatedSprite* aSprite = AnimatedSprite::getInstance(500,500, "./media/flamesheet.bmp");
+	AnimatedSprite* aSprite = AnimatedSprite::getInstance(500, 500, 14, 20, 7, "./media/flamesheet.bmp");
 
 	Hotkey* h = new TestHotkey();
 	ge.add(h);
+
+	//ge.setGravity(true, 1);
+	//sSprite->setAffectedByGravity(true); //testing Gravity
 
 	ge.add(sSprite);
 	ge.add(mSprite);

@@ -18,6 +18,10 @@ namespace cwing {
 		rect->h = h;
 	}
 
+	void Sprite::fall(int pixels) {
+		rect->y += pixels;
+	}
+
 	void Sprite::makeTexture(const char path[]) {
 		if (texture != nullptr)
 			SDL_DestroyTexture(texture);

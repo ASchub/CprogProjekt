@@ -8,11 +8,14 @@ namespace cwing {
 	class AnimatedSprite : public Sprite 
 	{
 	public:
-		static AnimatedSprite* getInstance(int x, int y, const char path[]);
+		static AnimatedSprite* getInstance(int x, int y, int w, int h, int nrOfFrames, const char path[]);
+		~AnimatedSprite();
 
 	protected:
-		AnimatedSprite(int x, int y, const char path[]);
+		AnimatedSprite(int x, int y, int w, int h, int nrOfFrames, const char path[]);
+		void makeTexture(const char path[]);
 		void draw() const;
+		void setDelay(int d);
 	private:
 	}; //class
 
