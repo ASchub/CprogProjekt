@@ -1,5 +1,4 @@
 #pragma once
-#include <string>
 #include "Hotkey.h"
 
 namespace cwing {

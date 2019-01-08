@@ -7,6 +7,7 @@
 #include "Hotkey.h"
 #include "FunctionHotkey.h"
 #include <iostream>
+#include "MemberHotkey.h"
 
 using namespace std;
 using namespace cwing;
@@ -18,6 +19,10 @@ public:
 		cout << "Normal Hotkey working!" << endl;
 	}
 };
+
+
+
+
 
 void testFuncHotkey() {
 	cout << "Function Hotkey Working!" << endl;
@@ -35,6 +40,9 @@ int main(int argc, char** argv) {
 
 	Hotkey* fh = FunctionHotkey::getInstance(SDLK_f, testFuncHotkey);
 	ge.add(fh);
+
+	Hotkey* mh = MemberHotkey<Hotkey>::getInstance(SDLK_m, fh, &Hotkey::perform);
+	ge.add(mh);
 
 	//ge.setGravity(true, 1);
 	//sSprite->setAffectedByGravity(true); //testing Gravity
