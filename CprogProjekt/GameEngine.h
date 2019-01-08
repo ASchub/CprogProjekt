@@ -23,7 +23,7 @@ namespace cwing {
 		void npcEvents();
 		void collisionDetection();
 		bool checkCollision(Sprite* A, Sprite* B);
-		void checkHotkeys();
+		void checkHotkeys(SDL_Event &event);
 		void runGravity();
 		std::vector<Hotkey*> hotkeys;
 		std::vector<Sprite*> sprites; //behöver vara pekare till sprite då det är en superklass, om man skickar en subklass och den tar emot hela objektet slicar den ned objektet till enbart sprite..
