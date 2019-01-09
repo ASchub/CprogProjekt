@@ -1,7 +1,13 @@
 #include "GameEngine.h"
 #include <SDL.h>
 #include "System.h"
+#include "Sprite.h"
+#include "MovableSprite.h"
+
 #include <iostream>
+#include <memory>
+
+
 
 namespace cwing {
 
@@ -30,18 +36,18 @@ namespace cwing {
 		while (!removed.empty()) {
 			removed.pop_back();
 		}
-			
 	}
 
-	void GameEngine::add(Sprite* s) {
+	void GameEngine::add(shared_ptr<Sprite> s) {
+		s->handleCollision(s);
 		added.push_back(s);
 	}
 
-	void GameEngine::add(Hotkey* h) {
+	void GameEngine::add(shared_ptr<Hotkey> h) {
 		hotkeys.push_back(h);
 	}
 
-	void GameEngine::remove(Sprite *s) {
+	void GameEngine::remove(shared_ptr<Sprite> s) {
 		removed.push_back(s);
 	}
 
@@ -92,7 +98,7 @@ namespace cwing {
 
 	void GameEngine::checkHotkeys() {
 		while (SDL_PollEvent(&event)) {
-			for (Hotkey* h : hotkeys) {
+			for (shared_ptr<Hotkey> h : hotkeys) {
 				if (event.key.keysym.sym == h->getKey())
 					h->perform();
 			}
@@ -100,8 +106,8 @@ namespace cwing {
 	}
 
 	void GameEngine::collisionDetection() {
-		for (Sprite* a : sprites) {
-			for (Sprite* b : sprites) {
+		for (shared_ptr<Sprite> a : sprites) {
+			for (shared_ptr<Sprite> b : sprites) {
 				if (a != b) {
 					if (checkCollision(a, b)) {
 						a->handleCollision(b);
@@ -111,14 +117,14 @@ namespace cwing {
 			}
 		}
 	}
-	bool GameEngine::checkCollision(Sprite* a, Sprite* b) { //returns true if objects collided.
+	bool GameEngine::checkCollision(shared_ptr<Sprite> a, shared_ptr<Sprite> b) { //returns true if objects collided.
 		//The sides of the rectangles
 		int leftA, leftB;
 		int rightA, rightB;
 		int topA, topB;
 		int bottomA, bottomB;
-		SDL_Rect* aRect = a->getRect();
-		SDL_Rect* bRect = b->getRect();
+		shared_ptr<SDL_Rect> aRect = a->getRect();
+		shared_ptr<SDL_Rect> bRect = b->getRect();
 
 		//Calculate the sides of rect A
 		leftA = aRect->x;
@@ -147,11 +153,10 @@ namespace cwing {
 	void GameEngine::prepareNextTick() {
 
 		//tar bort alla sprites som försvunnit under händelseförloppen., detta görs i slutet av loopen efter alla händelser har hanterats.
-		for (Sprite* s : removed) {
+		for (shared_ptr<Sprite> s : removed) {
 			for (auto it = sprites.begin(); it != sprites.end();) //auto i är en iterator över vectorn.
 				if (*it == s) {
 					it = sprites.erase(it); //erase returnerar en iterator till nästa element, så vi kan hoppa över det vi tar bort.
-					delete s;
 				}
 				else
 					it++; //får bara flytta fram iteratorn om vi inte tar bort ett element, eftersom vi redan får pekaren till nästa via erase.
@@ -160,14 +165,14 @@ namespace cwing {
 			removed.pop_back();
 		}
 
-		for (Sprite* s : sprites) {
+		for (shared_ptr<Sprite> s : sprites) {
 			s->resetMoveThisTick();
 		} //resets movement as prep for next tick,efter removed pga onödigt att reset:a objekt som tas bort
 
 		removed.clear(); //nu när vi tagit bort allt rensar vi removed så vi kan använda på nytt i nästa ticks.
 
 		//Lägger till saker som tillkommit under händelseförloppet
-		for (Sprite* s : added) {
+		for (shared_ptr<Sprite> s : added) {
 			sprites.push_back(s);
 		}
 		while (!added.empty()) {
@@ -178,7 +183,7 @@ namespace cwing {
 		SDL_RenderClear(sys.getRen()); //Behöver först rensa allt gammalt om man ska rita på nytt
 		//nu går vi igenom alla komponenter och ritar ut dem
 		//cout << "END loop, DRAW" << endl;
-		for (Sprite* s : sprites)
+		for (shared_ptr<Sprite> s : sprites)
 			s->draw();
 		SDL_RenderPresent(sys.getRen());
 
@@ -191,7 +196,7 @@ namespace cwing {
 	}
 
 	void GameEngine::runGravity() {
-		for (Sprite* s : sprites) {
+		for (shared_ptr<Sprite> s : sprites) {
 			if (s->isAffectedByGravity()) {
 				s->fall(gravityStrength);
 			}
@@ -204,18 +209,18 @@ namespace cwing {
 			switch (event.type) {
 			case SDL_QUIT: return true;
 			case SDL_MOUSEBUTTONDOWN:
-				for (Sprite* s : sprites) //kan va auto
+				for (shared_ptr<Sprite> s : sprites) //kan va auto
 					s->mouseDown(event); //funk i component som kollar om eventet är till sig.
 			case SDL_MOUSEBUTTONUP:
-				for (Sprite* s : sprites)
+				for (shared_ptr<Sprite> s : sprites)
 					s->mouseUp(event);
 			case SDL_KEYDOWN: {
-				for (Sprite* s : sprites)
+				for (shared_ptr<Sprite> s : sprites)
 					s->keyDown(event);
 				break;
 			}
 			case SDL_KEYUP:
-				for (Sprite* s : sprites)
+				for (shared_ptr<Sprite> s : sprites)
 					s->keyUp(event);
 
 			} //switch

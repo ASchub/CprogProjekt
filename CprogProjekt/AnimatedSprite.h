@@ -1,14 +1,16 @@
 #pragma once
 #include <SDL.h>
-#include <vector>
 #include "Sprite.h"
+
 #include <string>
+#include <memory>
+#include <vector>
 
 namespace cwing {
 	class AnimatedSprite : public Sprite 
 	{
 	public:
-		static AnimatedSprite* getInstance(int x, int y, int w, int h, int nrOfFrames, const char path[]);
+		static shared_ptr<AnimatedSprite> getInstance(int x, int y, int w, int h, int nrOfFrames, const char path[]);
 		~AnimatedSprite();
 
 	protected:

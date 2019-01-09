@@ -1,16 +1,20 @@
 #pragma once
-#include <vector>
 #include "Sprite.h"
 #include "Hotkey.h"
+
+#include <vector>
+#include <memory>
+
+using namespace std;
 
 namespace cwing {
 	class GameEngine
 	{
 	public:
 		GameEngine();
-		void add(Sprite*); //lägger till sprites i loopen
-		void add(Hotkey*);
-		void remove(Sprite*); //tar bort sprites från loopen
+		void add(shared_ptr<Sprite> s); //lägger till sprites i loopen
+		void add(shared_ptr<Hotkey> h);
+		void remove(shared_ptr<Sprite> s); //tar bort sprites från loopen
 		void setMaxFps(int i); //sätter eget maxFps
 		void setMinFps(int i); //sätter eget minFps
 		void run(); //startar spelloopen
@@ -22,19 +26,16 @@ namespace cwing {
 		void prepareNextTick();
 		void npcEvents();
 		void collisionDetection();
-		bool checkCollision(Sprite* A, Sprite* B);
+		bool checkCollision(shared_ptr<Sprite> A, shared_ptr<Sprite> B);
 		void checkHotkeys();
 		void runGravity();
-		std::vector<Hotkey*> hotkeys;
-		std::vector<Sprite*> sprites; //behöver vara pekare till sprite då det är en superklass, om man skickar en subklass och den tar emot hela objektet slicar den ned objektet till enbart sprite..
-		std::vector<Sprite*> added, removed; //för att ta bort saker under körning, skapar seperata vektorer för att hålla koll på vad som ska raderas/läggas på vid nästa tick
+		std::vector<shared_ptr<Hotkey>> hotkeys;
+		std::vector<shared_ptr<Sprite>> sprites; //behöver vara pekare till sprite då det är en superklass, om man skickar en subklass och den tar emot hela objektet slicar den ned objektet till enbart sprite..
+		std::vector<shared_ptr<Sprite>> added, removed; //för att ta bort saker under körning, skapar seperata vektorer för att hålla koll på vad som ska raderas/läggas på vid nästa tick
 		int maxFps;
 		int minFps;
 		SDL_Event event;
 		bool gravity = false;
 		int gravityStrength = 0;
 	};
-
-	
-
 } //cwing

@@ -1,7 +1,8 @@
 #include "AnimatedSprite.h"
 #include "System.h"
-#include <iostream>
 #include "Sprite.h"
+
+#include <iostream>
 #include <memory>
 using namespace std;
 
@@ -12,8 +13,8 @@ namespace cwing {
 	int delayCounter = 0;
 	unique_ptr<SDL_Rect> srcrect;
 
-	AnimatedSprite* AnimatedSprite::getInstance(int x, int y, int w, int h, int nrOfFrames, const char path[]) {
-		return new AnimatedSprite(x, y, w, h, nrOfFrames, path);
+	shared_ptr<AnimatedSprite> AnimatedSprite::getInstance(int x, int y, int w, int h, int nrOfFrames, const char path[]) {
+		return shared_ptr<AnimatedSprite>(new AnimatedSprite(x, y, w, h, nrOfFrames, path));
 	}
 	
 	AnimatedSprite::~AnimatedSprite() {
@@ -50,7 +51,7 @@ namespace cwing {
 				currentFrame = 0;
 			}
 			srcrect->x = (currentFrame * 14);
-			SDL_RenderCopy(sys.getRen(), getTexture(), srcrect.get(), getRect());
+			SDL_RenderCopy(sys.getRen(), getTexture(), srcrect.get(), getRect().get());
 
 			if (delayCounter > delay) {
 				currentFrame++;

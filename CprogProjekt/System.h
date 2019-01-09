@@ -1,6 +1,8 @@
 #pragma once
 #include <SDL.h>
 #include <SDL_ttf.h>
+
+#include <memory>
 /*
 Globalt system objekt, där vi lägger in globala variabler som tex vår renderare.
 */

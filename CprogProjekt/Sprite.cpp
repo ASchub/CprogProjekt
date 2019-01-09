@@ -1,11 +1,15 @@
 #include "Sprite.h"
 #include "System.h"
 
+#include <memory>
+
+using namespace std;
+
 namespace cwing {
 
 	Sprite::Sprite(int x, int y, int w, int h, const char path[])
 	{
-		rect = new SDL_Rect();
+		rect = shared_ptr<SDL_Rect>(new SDL_Rect());
 		rect->x = x;
 		rect->y = y;
 		rect->w = w;

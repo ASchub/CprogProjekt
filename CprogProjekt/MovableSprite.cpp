@@ -1,6 +1,8 @@
 #include "MovableSprite.h"
 #include "System.h"
+
 #include <iostream>
+#include <memory>
 
 using namespace std;
 
@@ -10,8 +12,8 @@ namespace cwing {
 	int xVel = 0;
 	int yVel = 0;
 
-	MovableSprite* MovableSprite::getInstance(int x, int y, const char path[]) {
-		return new MovableSprite(x, y, path);
+	shared_ptr<MovableSprite> MovableSprite::getInstance(int x, int y, const char path[]) {
+		return shared_ptr<MovableSprite>(new MovableSprite(x, y, path));
 	}
 
 	MovableSprite::MovableSprite(int x, int y, const char path[]) : Sprite(x, y, 0, 0, path)
@@ -73,10 +75,11 @@ namespace cwing {
 	}
 
 	void MovableSprite::draw() const {
-		SDL_RenderCopy(sys.getRen(), getTexture(), NULL, getRect());
+		SDL_RenderCopy(sys.getRen(), getTexture(), NULL, getRect().get());
 	}
 
-	void MovableSprite::handleCollision(const Sprite* other) {
+	void MovableSprite::handleCollision(const shared_ptr<Sprite> other) {
+		cout << "movable" << endl;
 		setXY(300, 100);
 
 		/*

@@ -1,6 +1,8 @@
 #include "System.h"
 #include <SDL.h>
+
 #include <stdexcept>
+#include <memory>
 
 namespace cwing {
 

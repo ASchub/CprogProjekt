@@ -1,14 +1,19 @@
 #pragma once
 #include <SDL.h>
 
+#include <memory>
+#include <iostream>
+
+using namespace std;
+
 namespace cwing {
 
 	class Sprite
 	{
 	public:
-		virtual ~Sprite() { SDL_DestroyTexture(texture); delete rect; };
+		virtual ~Sprite() { SDL_DestroyTexture(texture);};
 		//då denna är för subklasserna, dvs virtual, ej abstrakt (=0) men vi deklarerar en tom metod för de subklasser som inte vill ha en
-		virtual void handleCollision(const Sprite* other) {}
+		virtual void handleCollision(shared_ptr<const Sprite> other) { cout << "sprite" << endl; }
 		virtual void mouseDown(const SDL_Event& event) {}
 		virtual void mouseUp(const SDL_Event& event) {}
 		virtual void keyDown(const SDL_Event& event) {}
@@ -17,7 +22,7 @@ namespace cwing {
 		virtual void tick() {}
 		bool isAffectedByGravity() { return affectedByGravity;}
 		void setAffectedByGravity(bool isAffected) { affectedByGravity = isAffected; } //möjlighet att välja om sprite skall påverkas eller ej1
-		SDL_Rect* getRect() const { return rect; }
+		shared_ptr<SDL_Rect> getRect() const { return rect; }
 		virtual void draw() const = 0; //helt virtuel och abstrakt, alla objekt måste ritas ut så kan inte göra tom deklaration (=0)
 		Sprite(const Sprite&) = delete; //Copy konstruktorn, ska ej finnas då vi inte vill kunna skapa objekt av denna abstrakta klass
 		const Sprite& operator=(const Sprite&) = delete; //samma som ovan, ingen operator överlagring
@@ -28,7 +33,7 @@ namespace cwing {
 		void setWH(int w, int h); //bör kunna ändra storlek/position för spriten
 		void setXY(int x, int y);
 	private:
-		SDL_Rect* rect; //definitionen av en rektangel, som kommer innehålla våran sprite
+		shared_ptr<SDL_Rect> rect; //definitionen av en rektangel, som kommer innehålla våran sprite
 		SDL_Texture* texture = nullptr;
 		void makeTexture(const char path[]);
 		bool affectedByGravity = false; //standard att sprites inte är påverkade av gravitationen
