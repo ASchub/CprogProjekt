@@ -13,8 +13,7 @@
 
 namespace cwing {
 
-	Uint32 nextTick = SDL_GetTicks(); //initiellt värde, uppdateras varje tick
-	Uint32 now;
+
 
 	GameEngine::GameEngine(int max_Fps, int min_Fps)
 	{

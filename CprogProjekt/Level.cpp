@@ -49,8 +49,9 @@ namespace cwing {
 	}
 
 	void Level::tick() {
-		collisionDetection();
-		npcEvents();
+		for (shared_ptr<Sprite> s : sprites) {
+			s->tick(sprites);
+		}
 		prepareNextTick();
 	}
 
@@ -60,51 +61,6 @@ namespace cwing {
 				s->fall(gravityStrength);
 			}
 		}
-	}
-
-	void Level::collisionDetection() {
-		for (shared_ptr<Sprite> a : sprites) {
-			for (shared_ptr<Sprite> b : sprites) {
-				if (a != b) {
-					if (checkCollision(a, b)) {
-						a->handleCollision(b);
-						b->handleCollision(a);
-					}
-				}
-			}
-		}
-	}
-
-	bool Level::checkCollision(shared_ptr<Sprite> a, shared_ptr<Sprite> b) {
-		//The sides of the rectangles
-		int leftA, leftB;
-		int rightA, rightB;
-		int topA, topB;
-		int bottomA, bottomB;
-		shared_ptr<SDL_Rect> aRect = a->getRect();
-		shared_ptr<SDL_Rect> bRect = b->getRect();
-
-		//Calculate the sides of rect A
-		leftA = aRect->x;
-		rightA = aRect->x + aRect->w;
-		topA = aRect->y;
-		bottomA = aRect->y + aRect->h;
-
-		//Calculate the sides of rect B
-		leftB = bRect->x;
-		rightB = bRect->x + bRect->w;
-		topB = bRect->y;
-		bottomB = bRect->y + bRect->h;
-
-		//If any of the sides from A are outside of B
-		if ((bottomA <= topB) || (topA >= bottomB) || (rightA <= leftB) || (leftA >= rightB))
-			return false;
-		//If none of the sides from A are outside B
-		return true;
-	}
-
-	void Level::npcEvents() {
-
 	}
 
 	void Level::prepareNextTick() {
@@ -134,10 +90,6 @@ namespace cwing {
 		while (!added.empty()) {
 			added.pop_back();
 		}
-
-		//nu går vi igenom alla komponenter och ritar ut dem
-		for (shared_ptr<Sprite> s : sprites)
-			s->draw();
 
 		//kör gravitation inför nästa tick, förutsatt att gravitationen är på
 		if (gravity) {

@@ -41,4 +41,32 @@ namespace cwing {
 		rect->y = y;
 	}
 
+	bool Sprite::checkCollision(std::shared_ptr<const Sprite> other) {
+		//The sides of the rectangles
+		int left, leftO;
+		int right, rightO;
+		int top, topO;
+		int bottom, bottomO;
+		shared_ptr<SDL_Rect> rect = getRect();
+		shared_ptr<SDL_Rect> oRect = other->getRect();
+
+		//Calculate the sides of rect A
+		left = rect->x;
+		right = rect->x + rect->w;
+		top = rect->y;
+		bottom = rect->y + rect->h;
+
+		//Calculate the sides of rect B
+		leftO = oRect->x;
+		rightO = oRect->x + oRect->w;
+		topO = oRect->y;
+		bottomO = oRect->y + oRect->h;
+
+		//If any of the sides from A are outside of B
+		if ((bottom <= topO) || (top >= bottomO) || (right <= leftO) || (left >= rightO))
+			return false;
+		//If none of the sides from A are outside B
+		return true;
+	}
+
 } //cwing
