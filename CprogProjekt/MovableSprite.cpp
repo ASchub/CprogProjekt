@@ -22,7 +22,6 @@ namespace cwing {
 
 	void MovableSprite::keyDown(const SDL_Event& event)
 	{
-		cout << "inside keyDown for movablesprite" << endl;
 		switch (event.key.keysym.sym) {
 			//case SDLK_UP: cout << "keyup" << endl;
 		case SDLK_UP:
