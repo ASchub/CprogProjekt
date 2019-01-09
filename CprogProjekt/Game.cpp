@@ -37,7 +37,6 @@ namespace cwing {
 		std::shared_ptr<Level> level = shared_ptr<Level>(Level::getInstance());
 		level->add(StationarySprite::getInstance(100, 100, "./media/tree.bmp"));
 		level->add(StationarySprite::getInstance(500, 100, "./media/tree.bmp"));
-		level->add(StationarySprite::getInstance(500, 700, "./media/tree.bmp"));
 		level->add(player);
 		level->add(AnimatedSprite::getInstance(500, 500, 14, 20, 7, "./media/flamesheet.bmp"));
 		engine->add(level);

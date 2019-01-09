@@ -17,6 +17,7 @@ namespace cwing {
 		System();
 		SDL_Renderer *getRen() const;
 		TTF_Font* getFont() const;
+		SDL_Window* getWin() const;
 		~System();
 	private:
 		SDL_Window *win;

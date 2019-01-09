@@ -116,12 +116,5 @@ namespace cwing {
 
 	void GameEngine::nextLevel() {
 		currentLevel++;
-		if (levels.at(currentLevel) != nullptr) {
-			buildLevel(levels.at(currentLevel));
-		}
-	}
-
-	void GameEngine::buildLevel(shared_ptr<Level> l) {
-
 	}
 } //cwing

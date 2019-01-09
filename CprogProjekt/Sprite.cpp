@@ -41,6 +41,33 @@ namespace cwing {
 		rect->y = y;
 	}
 
+	void Sprite::checkCollideWithWindow() {
+		int left, right, top, bottom;
+		int winLeft, winRight, winTop, winBottom;
+
+		left = rect->x;
+		right = rect->x + rect->w;
+		top = rect->y;
+		bottom = rect->y + rect->h;
+
+		winLeft = 0;
+		winRight = SDL_GetWindowSurface(sys.getWin())->w;
+		winTop = 0;
+		winBottom = SDL_GetWindowSurface(sys.getWin())->h;
+		if (left <= winLeft) {
+			rect->x = 0;
+		}
+		if (right >= winRight) {
+			rect->x = winRight - rect->w;
+		}
+		if (top <= winTop) {
+			rect->y = 0;
+		}
+		if (bottom >= winBottom) {
+			rect->y = winBottom - rect->h;
+		}
+	}
+
 	bool Sprite::checkCollision(std::shared_ptr<const Sprite> other) {
 		//The sides of the rectangles
 		int left, leftO;

@@ -30,8 +30,10 @@ namespace cwing {
 
 		
 		bool checkCollision(shared_ptr<const Sprite> other);
+		void checkCollideWithWindow();
 		virtual void handleCollision() {}
 		virtual int tick(std::vector<shared_ptr<Sprite>> sprites) {
+			checkCollideWithWindow();
 			for (shared_ptr<Sprite> s : sprites) {
 				if (this != s.get()) {
 					if (checkCollision(s)) {
