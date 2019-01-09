@@ -9,8 +9,6 @@ using namespace std;
 namespace cwing {
 	int speed = BASE_SPEED; //max movement per tick, magic number
 	bool movedThisTick = false; //resets every tick
-	int xVel = 0;
-	int yVel = 0;
 
 	shared_ptr<MovableSprite> MovableSprite::getInstance(int x, int y, const char path[]) {
 		return shared_ptr<MovableSprite>(new MovableSprite(x, y, path));
@@ -20,57 +18,57 @@ namespace cwing {
 	{
 	}
 
+
+	/*
 	void MovableSprite::keyDown(const SDL_Event& event)
 	{
 		switch (event.key.keysym.sym) {
 			//case SDLK_UP: cout << "keyup" << endl;
 		case SDLK_UP:
 			if (!movedThisTick) {
-				yVel--;
-				move();
+				moveUp();
 				movedThisTick = true;
 			} //move if max movement is not already reached
 			break;
 		case SDLK_DOWN:
 			if (!movedThisTick) {
-				yVel++;
-				move();
+				moveDown();
 				movedThisTick = true;
 			}//move if max movement is not already reached
 			break;
 		case SDLK_RIGHT:
 			if (!movedThisTick) {
-				xVel++;
-				move();
+				moveRight();
 				movedThisTick = true;
 			}//move if max movement is not already reached
 			break;
 		case SDLK_LEFT:
 			if (!movedThisTick) {
-				xVel--;
-				move();
+				moveLeft();
 				movedThisTick = true;
 			}//move if max movement is not already reached
 			break;
 		} //switch
 	}
+	*/
+	void MovableSprite::moveUp() {
+		setXY(getRect()->x, getRect()->y - speed);
+	}
 
-	void MovableSprite::move() {
-		if(yVel > 0)
-			setXY(getRect()->x, getRect()->y + speed);
-		else if(yVel < 0)
-			setXY(getRect()->x, getRect()->y - speed);
-		else if(xVel > 0)
-			setXY(getRect()->x + speed, getRect()->y);
-		else if(xVel < 0)
-			setXY(getRect()->x - speed, getRect()->y);
+	void MovableSprite::moveDown() {
+		setXY(getRect()->x, getRect()->y + speed);
+	}
 
+	void MovableSprite::moveRight() {
+		setXY(getRect()->x + speed, getRect()->y);
+	}
+
+	void MovableSprite::moveLeft() {
+		setXY(getRect()->x - speed, getRect()->y);
 	}
 
 	void MovableSprite::resetMoveThisTick() {
 		movedThisTick = false;
-		yVel = 0;
-		xVel = 0;
 	}
 
 	void MovableSprite::draw() const {

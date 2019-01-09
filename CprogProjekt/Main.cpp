@@ -33,13 +33,26 @@ void testFuncHotkey() {
 int main(int argc, char** argv) {
 	GameEngine ge;
 	shared_ptr<StationarySprite> sSprite = StationarySprite::getInstance(100, 100, "./media/gubbe.bmp");
-	shared_ptr<MovableSprite> mSprite = MovableSprite::getInstance(300, 100, "./media/gubbe.bmp");
+	//shared_ptr<MovableSprite> mSprite = MovableSprite::getInstance(500, 100, "./media/gubbe.bmp");
 	shared_ptr<AnimatedSprite> aSprite = AnimatedSprite::getInstance(500, 500, 14, 20, 7, "./media/flamesheet.bmp");
 
-	shared_ptr<TestHotkey> h = shared_ptr<TestHotkey>(new TestHotkey());
+	//Testing player controlled Movable with memberhotkeys
+	shared_ptr<MovableSprite> pcSprite = MovableSprite::getInstance(300, 100, "./media/gubbe.bmp");
+	ge.add(pcSprite);
+
+	shared_ptr<MemberHotkey<MovableSprite>> upKey = MemberHotkey<MovableSprite>::getInstance(SDLK_UP, pcSprite, &MovableSprite::moveUp);
+	shared_ptr<MemberHotkey<MovableSprite>> downKey = MemberHotkey<MovableSprite>::getInstance(SDLK_DOWN, pcSprite, &MovableSprite::moveDown);
+	shared_ptr<MemberHotkey<MovableSprite>> rightKey = MemberHotkey<MovableSprite>::getInstance(SDLK_RIGHT, pcSprite, &MovableSprite::moveRight);
+	shared_ptr<MemberHotkey<MovableSprite>> leftKey = MemberHotkey<MovableSprite>::getInstance(SDLK_LEFT, pcSprite, &MovableSprite::moveLeft);
+
+	ge.add(upKey);
+	ge.add(downKey);
+	ge.add(rightKey);
+	ge.add(leftKey);
 
 	//hotkey testing, using SPACE, F, M
 	//Hotkey* h = new TestHotkey();
+	shared_ptr<TestHotkey> h = shared_ptr<TestHotkey>(new TestHotkey());
 	ge.add(h);
 
 	//Hotkey* fh = FunctionHotkey::getInstance(SDLK_f, testFuncHotkey);
@@ -53,7 +66,7 @@ int main(int argc, char** argv) {
 	//sSprite->setAffectedByGravity(true); //testing Gravity
 
 	ge.add(sSprite);
-	ge.add(mSprite);
+	//ge.add(mSprite);
 	ge.add(aSprite);
 	ge.run();
 
