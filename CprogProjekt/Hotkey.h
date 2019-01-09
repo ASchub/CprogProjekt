@@ -5,10 +5,9 @@ class Hotkey
 {
 public:
 	virtual void perform() {}
-	~Hotkey();
 	SDL_Keycode getKey() const { return key; }
 protected:
-	Hotkey(SDL_Keycode k);
+	Hotkey(SDL_Keycode k) { key = k; }
 private:
 	SDL_Keycode key;
 };

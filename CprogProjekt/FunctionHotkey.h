@@ -10,9 +10,11 @@ namespace cwing {
 	{
 	public:
 		void perform() { doIt(); }
-		static shared_ptr<FunctionHotkey> getInstance(SDL_Keycode k, void(*f)());
+		static shared_ptr<FunctionHotkey> getInstance(SDL_Keycode k, void(*f)()) {
+			return shared_ptr<FunctionHotkey>(new FunctionHotkey(k, f));
+		}
 	protected:
-		FunctionHotkey(SDL_Keycode k, void(*f)());
+		FunctionHotkey(SDL_Keycode k, void(*f)()) : Hotkey(k), doIt(f){}
 	private:
 		void(*doIt)();
 	};
