@@ -28,6 +28,5 @@ namespace cwing {
 	extern System sys; //extern deklarering visar allt som läser denna att det finns ett objekt "sys" nånstans, men den defineras inte här.
 	extern Uint32 spriteSpeed;
 	extern Uint32 spriteGravity;
-	extern Uint32 bounceRate;
 
 } //cwing

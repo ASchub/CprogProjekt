@@ -41,7 +41,6 @@ namespace cwing {
 
 	Uint32 spriteSpeed = 2;
 	Uint32 spriteGravity = 4;
-	Uint32 bounceRate = 4;
 	System sys; //definerar ett objekt, globalt så deklareras som extern i header filen
 
 } //cwing
