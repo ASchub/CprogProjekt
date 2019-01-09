@@ -63,9 +63,20 @@ namespace cwing {
 		bottomO = oRect->y + oRect->h;
 
 		//If any of the sides from A are outside of B
-		if ((bottom <= topO) || (top >= bottomO) || (right <= leftO) || (left >= rightO))
+		if (bottom <= topO) {
 			return false;
-		//If none of the sides from A are outside B
+		}
+		if (top >= bottomO) {
+			return false;
+		}
+		if (right <= leftO) {
+			return false;
+		}
+		if (left >= rightO) {
+			return false;
+		}
+
+		handleCollision(other);
 		return true;
 	}
 

@@ -12,7 +12,6 @@ namespace cwing {
 	public:
 		static shared_ptr<MovableSprite> getInstance(int x, int y, const char path[]); //only supports BMP paths atm.
 		//virtual void handleCollision(shared_ptr<const Sprite> other)
-		void handleCollision(shared_ptr<const Sprite> other);
 		void draw() const;
 		//void keyDown(const SDL_Event& event);
 		void resetMoveThisTick();
@@ -22,7 +21,10 @@ namespace cwing {
 		void moveLeft();
 	protected:
 		MovableSprite(int x, int y, const char path[]);
+		virtual void handleCollision(shared_ptr<const Sprite> other);
 	private:
+		int xVel = 0;
+		int yVel = 0;
 	};
 
 } //cwing

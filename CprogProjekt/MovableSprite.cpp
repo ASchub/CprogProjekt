@@ -7,7 +7,7 @@
 using namespace std;
 
 namespace cwing {
-	int speed = BASE_SPEED; //max movement per tick, magic number
+	int speed = spriteSpeed; //max movement per tick, magic number
 	bool movedThisTick = false; //resets every tick
 
 	shared_ptr<MovableSprite> MovableSprite::getInstance(int x, int y, const char path[]) {
@@ -18,109 +18,58 @@ namespace cwing {
 	{
 	}
 
-
-	/*
-	void MovableSprite::keyDown(const SDL_Event& event)
-	{
-		switch (event.key.keysym.sym) {
-			//case SDLK_UP: cout << "keyup" << endl;
-		case SDLK_UP:
-			if (!movedThisTick) {
-				moveUp();
-				movedThisTick = true;
-			} //move if max movement is not already reached
-			break;
-		case SDLK_DOWN:
-			if (!movedThisTick) {
-				moveDown();
-				movedThisTick = true;
-			}//move if max movement is not already reached
-			break;
-		case SDLK_RIGHT:
-			if (!movedThisTick) {
-				moveRight();
-				movedThisTick = true;
-			}//move if max movement is not already reached
-			break;
-		case SDLK_LEFT:
-			if (!movedThisTick) {
-				moveLeft();
-				movedThisTick = true;
-			}//move if max movement is not already reached
-			break;
-		} //switch
-	}
-	*/
 	void MovableSprite::moveUp() {
+		yVel -= speed;
 		setXY(getRect()->x, getRect()->y - speed);
 	}
 
 	void MovableSprite::moveDown() {
+		yVel += speed;
 		setXY(getRect()->x, getRect()->y + speed);
 	}
 
 	void MovableSprite::moveRight() {
+		xVel += speed;
 		setXY(getRect()->x + speed, getRect()->y);
 	}
 
 	void MovableSprite::moveLeft() {
+		xVel -= speed;
 		setXY(getRect()->x - speed, getRect()->y);
 	}
 
 	void MovableSprite::resetMoveThisTick() {
 		movedThisTick = false;
+		yVel = 0;
+		xVel = 0;
 	}
 
 	void MovableSprite::draw() const {
 		SDL_RenderCopy(sys.getRen(), getTexture(), NULL, getRect().get());
+
 	}
+
 
 	void MovableSprite::handleCollision(shared_ptr<const Sprite> other) {
-		setXY(300, 100);
-
-		/*
-		int BounceRate = speed * 3;
-		int left, leftO;
-		int right, rightO;
-		int top, topO;
-		int bottom, bottomO;
-
-		//Calculate the sides of this
-		left = getRect().x;
-		right = getRect().x + getRect().w;
-		top = getRect().y;
-		bottom = getRect().y + getRect().h;
-
-		//Calculate the sides of rect B
-		leftO = other->getRect().x;
-		rightO = other->getRect().x + other->getRect().w;
-		topO = other->getRect().y;
-		bottomO = other->getRect().y + other->getRect().h;
-
-		//bounce off objekt.
-
-		//If any of the sides from A are outside of B
-		if (bottom <= topO) {
-			cout << "something happened" << endl;
-			setXY(getRect().x, getRect().y - BounceRate);
+		int move = speed;
+		if (bounces > 0) {
+			move = speed*(1+ bounceRate);
 		}
-		if (top >= bottomO) {
-			cout << "something happened" << endl;
-			setXY(getRect().x, getRect().y + BounceRate);
-		}
-		if (right <= leftO) {
-			cout << "something happened" << endl;
-			setXY(getRect().x - BounceRate, getRect().y);
-		}
-		if (left >= rightO) {
-			cout << "something happened" << endl;
-			setXY(getRect().x + BounceRate, getRect().y);
-		}
+		if (yVel > 0)
+			setXY(getRect()->x, getRect()->y - move);
+		else if (yVel < 0)
+			setXY(getRect()->x, getRect()->y + move);
+		else if (xVel > 0)
+			setXY(getRect()->x - move, getRect()->y);
+		else if (xVel < 0)
+			setXY(getRect()->x + move, getRect()->y);
 
-		//If none of the sides from A are outside B
-		*/
-
+		resetMoveThisTick();
 	}
+
+	//void MovableSprite::handleCollision(shared_ptr<const Sprite> other) {
+	//	setXY(300, 100);
+	//}
 
 
 } //cwing

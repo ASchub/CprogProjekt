@@ -100,17 +100,13 @@ namespace cwing {
 		}
 	}
 
+
 	bool GameEngine::handleEvents() { //returns TRUE if quit should be true
 		while (SDL_PollEvent(&event)) {
-			//lång switchsats som kollar eventhändelser.
-			switch (event.type) {
-			case SDL_QUIT: return true;
-			default: {
-				checkHotkeys(event);
-				break;
-			}
-			} //switch
-		} //inre while (spelar händelser)
+			if (event.type == SDL_QUIT)
+				return true;
+			checkHotkeys(event);
+		} //while
 		return false;
 	}
 

@@ -72,6 +72,7 @@ namespace cwing {
 
 	void Game::createPlayer() {
 		player = MovableSprite::getInstance(300, 100, "./media/gubbe.bmp");
+		player->setBounces(5);
 		engine->addPlayer(player);
 	}
 

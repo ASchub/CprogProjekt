@@ -17,6 +17,7 @@ namespace cwing {
 		void add(shared_ptr<Hotkey> h);
 		void add(shared_ptr<Level> l);
 		void remove(shared_ptr<Sprite> s); //tar bort sprites från loopen
+		//void remove(shared_ptr<Hotkey> h);  //should implement this...
 		void setMaxFps(int i); //sätter eget maxFps
 		void setMinFps(int i); //sätter eget minFps
 		void run(); //startar spelloopen
