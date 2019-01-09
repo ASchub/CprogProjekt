@@ -4,8 +4,8 @@
 #include "MovableSprite.h"
 #include "AnimatedSprite.h"
 #include "Hotkey.h"
-
 #include <string>
+#include "FunctionHotkey.h"
 #include <iostream>
 #include <memory>
 
@@ -16,9 +16,13 @@ class TestHotkey : public Hotkey{
 public:
 	TestHotkey() :Hotkey(SDLK_SPACE) {}
 	void perform() {
-		cout << "Hotkey working!" << endl;
+		cout << "Normal Hotkey working!" << endl;
 	}
 };
+
+void testFuncHotkey() {
+	cout << "Function Hotkey Working!" << endl;
+}
 
 int main(int argc, char** argv) {
 	GameEngine ge;
@@ -27,9 +31,15 @@ int main(int argc, char** argv) {
 	shared_ptr<AnimatedSprite> aSprite = AnimatedSprite::getInstance(500, 500, 14, 20, 7, "./media/flamesheet.bmp");
 
 	shared_ptr<TestHotkey> h = shared_ptr<TestHotkey>(new TestHotkey());
+
+	//hotkey testing, using SPACE, F, M
+	//Hotkey* h = new TestHotkey();
 	ge.add(h);
 
-	//ge.setGravity(true, 1);
+	//Hotkey* fh = FunctionHotkey::getInstance(SDLK_f, testFuncHotkey);
+	shared_ptr<FunctionHotkey> fh = shared_ptr<FunctionHotkey>(FunctionHotkey::getInstance(SDLK_f, testFuncHotkey));
+	ge.add(fh);
+	//ge.setGravity(true, 1);w
 	//sSprite->setAffectedByGravity(true); //testing Gravity
 
 	ge.add(sSprite);

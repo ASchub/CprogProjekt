@@ -69,15 +69,13 @@ namespace cwing {
 			if (nextTick <= now) {
 				//cout << "loop BEGIN" << endl;
 
-				quit = handleEvents();
+				quit = handleEvents(); //also handles hotkeys now, helpfunction "checkHotkeys()"
 				if (quit)
 					break;
 
 				npcEvents();
 
 				collisionDetection(); //needs work
-
-				checkHotkeys();
 
 				/*
 				Här borde andra händelser ske, som att fiender rör sig m.m.
@@ -95,15 +93,6 @@ namespace cwing {
 		} //yttre while
 
 	} //run
-
-	void GameEngine::checkHotkeys() {
-		while (SDL_PollEvent(&event)) {
-			for (shared_ptr<Hotkey> h : hotkeys) {
-				if (event.key.keysym.sym == h->getKey())
-					h->perform();
-			}
-		} //inre while (spelar händelser)
-	}
 
 	void GameEngine::collisionDetection() {
 		for (shared_ptr<Sprite> a : sprites) {
@@ -203,6 +192,16 @@ namespace cwing {
 		}
 	}
 
+	void GameEngine::checkHotkeys(SDL_Event &event) {
+		for (shared_ptr<Hotkey> h : hotkeys) {
+			//cout << "Inside Loop" << endl;
+			if (event.key.keysym.sym == h->getKey()) {
+				//cout << "Key Matched" << endl;
+				h->perform();
+			}
+		}
+	}
+
 	bool GameEngine::handleEvents() { //returns TRUE if quit should be true
 		while (SDL_PollEvent(&event)) {
 			//lång switchsats som kollar eventhändelser.
@@ -214,15 +213,16 @@ namespace cwing {
 			case SDL_MOUSEBUTTONUP:
 				for (shared_ptr<Sprite> s : sprites)
 					s->mouseUp(event);
-			case SDL_KEYDOWN: {
+			case SDL_KEYDOWN: 
 				for (shared_ptr<Sprite> s : sprites)
 					s->keyDown(event);
-				break;
-			}
 			case SDL_KEYUP:
 				for (shared_ptr<Sprite> s : sprites)
 					s->keyUp(event);
-
+			default: {
+				checkHotkeys(event);
+				break;
+			}
 			} //switch
 
 		} //inre while (spelar händelser)

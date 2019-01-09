@@ -22,7 +22,7 @@ namespace cwing {
 
 	void MovableSprite::keyDown(const SDL_Event& event)
 	{
-		//cout << "inside keyDown for movablesprite" << endl;
+		cout << "inside keyDown for movablesprite" << endl;
 		switch (event.key.keysym.sym) {
 			//case SDLK_UP: cout << "keyup" << endl;
 		case SDLK_UP:
@@ -78,8 +78,7 @@ namespace cwing {
 		SDL_RenderCopy(sys.getRen(), getTexture(), NULL, getRect().get());
 	}
 
-	void MovableSprite::handleCollision(const shared_ptr<Sprite> other) {
-		cout << "movable" << endl;
+	void MovableSprite::handleCollision(shared_ptr<const Sprite> other) {
 		setXY(300, 100);
 
 		/*
