@@ -24,9 +24,10 @@ namespace cwing {
 		virtual void draw() const = 0; //helt virtuel och abstrakt, alla objekt måste ritas ut så kan inte göra tom deklaration (=0)
 		Sprite(const Sprite&) = delete; //Copy konstruktorn, ska ej finnas då vi inte vill kunna skapa objekt av denna abstrakta klass
 		const Sprite& operator=(const Sprite&) = delete; //samma som ovan, ingen operator överlagring
-		
-		
+	
+		void checkCollideWithWindow();
 		virtual int tick(std::vector<shared_ptr<Sprite>> sprites) {
+			checkCollideWithWindow();
 			for (shared_ptr<Sprite> s : sprites) {
 				if (this != s.get()) {
 					checkCollision(s);

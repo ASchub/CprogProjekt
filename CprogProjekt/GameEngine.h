@@ -35,7 +35,6 @@ namespace cwing {
 		int minFps;
 		SDL_Event event;
 		int currentLevel = 0; // starts at 0, updates when level is updated
-		void buildLevel(shared_ptr<Level> l);
 		shared_ptr<Sprite> player;
 
 		Uint32 nextTick = SDL_GetTicks(); //initiellt värde, uppdateras varje tick

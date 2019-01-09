@@ -26,6 +26,10 @@ namespace cwing {
 		return font;
 	}
 
+	SDL_Window* System::getWin() const {
+		return win;
+	}
+
 	System::~System()
 	{
 		TTF_CloseFont(font);
