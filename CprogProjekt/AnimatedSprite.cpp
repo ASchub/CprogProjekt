@@ -22,6 +22,7 @@ namespace cwing {
 
 	AnimatedSprite::AnimatedSprite(int x, int y, int w, int h, int nrOfFrames, const char path[]) : Sprite(x, y, w, h, path)
 	{
+		setSolid(false);
 		frames = nrOfFrames;
 		setWH(w, h);
 		srcrect = make_unique<SDL_Rect>();

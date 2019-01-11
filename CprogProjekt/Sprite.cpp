@@ -41,7 +41,57 @@ namespace cwing {
 		rect->y = y;
 	}
 
-	void Sprite::checkCollideWithWindow() {
+	bool Sprite::checkSpriteCollision(shared_ptr<Sprite> other) {
+		shared_ptr<SDL_Rect> intersectionResult = shared_ptr<SDL_Rect>(new SDL_Rect());
+		if (checkRectCollision(other->getRect(), intersectionResult) && isSolid() && other->isSolid()) {
+				handleCollision(intersectionResult);
+				other->handleCollision(intersectionResult);
+				return true;
+		}
+		return false;
+	}
+	
+	bool Sprite::checkBoundaryCollision(shared_ptr<SDL_Rect> playableArea) {
+		shared_ptr<SDL_Rect> intersectionResult = shared_ptr<SDL_Rect>(new SDL_Rect());
+		checkRectCollision(playableArea, intersectionResult);
+		if(intersectionResult->w != getRect()->w || intersectionResult->h != getRect()->h) {
+			adjustInsideWindow(intersectionResult);
+			return true;
+		}
+		return false;
+	}
+
+	void Sprite::adjustInsideWindow(shared_ptr<SDL_Rect> intersectionResult) {
+		int xDiff = getRect()->x - intersectionResult->x;
+		int yDiff = getRect()->y - intersectionResult->y;
+		int wDiff = getRect()->w - intersectionResult->w;
+		int hDiff = getRect()->h - intersectionResult->h;
+		if (wDiff != 0) { //om någon del av spriten är utanför areans x-axel
+			if (xDiff >= 0) { //om spriten krockar med högra kanten
+				getRect()->x -= wDiff; //justera x-position med så mycket som spriten är utanför frame
+			} else{ //spriten krockar med vänstra kanten
+				getRect()->x = intersectionResult->x; //sätt x-position till kanten
+			}
+		}
+		if (hDiff != 0) { //om någon del av spriten är utanför areans y-axel
+			if (yDiff >= 0) { //om spriten krockar med nedre kanten
+				getRect()->y -= hDiff; // justera y-position med så mycket som spriten är utanför frame
+			} else { //spriten krockar med övre kanten
+				getRect()->y = intersectionResult->y; //sätt y-position till kanten
+			}
+		}
+	}
+
+	bool Sprite::checkRectCollision(shared_ptr<SDL_Rect> otherRect, shared_ptr<SDL_Rect> intersectionResult) {
+		if (SDL_IntersectRect(getRect().get(), otherRect.get(), intersectionResult.get())) {
+			return true;
+		}
+		return false;
+	}
+
+
+
+	/*void Sprite::checkCollideWithWindow() {
 		int left, right, top, bottom;
 		int winLeft, winRight, winTop, winBottom;
 
@@ -105,6 +155,6 @@ namespace cwing {
 
 		handleCollision(other);
 		return true;
-	}
+	}*/
 
 } //cwing

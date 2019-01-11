@@ -49,8 +49,25 @@ namespace cwing {
 
 	}
 
+	void MovableSprite::handleCollision(std::shared_ptr<SDL_Rect> intersection) {
+		int move = speed;
+		if (bounces > 0) {
+			move = speed * (1 + bounceRate);
+		}
+		if (yVel > 0)
+			setXY(getRect()->x, getRect()->y - move);
+		else if (yVel < 0)
+			setXY(getRect()->x, getRect()->y + move);
+		else if (xVel > 0)
+			setXY(getRect()->x - move, getRect()->y);
+		else if (xVel < 0)
+			setXY(getRect()->x + move, getRect()->y);
 
-	void MovableSprite::handleCollision(shared_ptr<const Sprite> other) {
+		resetMoveThisTick();
+	}
+
+
+	/*void MovableSprite::handleCollision(shared_ptr<const Sprite> other) {
 		int move = speed;
 		if (bounces > 0) {
 			move = speed*(1+ bounceRate);
@@ -65,7 +82,7 @@ namespace cwing {
 			setXY(getRect()->x + move, getRect()->y);
 
 		resetMoveThisTick();
-	}
+	}*/
 
 	//void MovableSprite::handleCollision(shared_ptr<const Sprite> other) {
 	//	setXY(300, 100);

@@ -23,16 +23,22 @@ namespace cwing {
 		}
 	}	//Destruktor
 
-	shared_ptr<Level> Level::getInstance(bool gravity, int downwardsMotion) {
-		return shared_ptr<Level>(new Level(gravity, downwardsMotion));
+	std::shared_ptr<Level> Level::getInstance(bool gravity, int downwardsMotion, std::shared_ptr<SDL_Rect> gameArea) {
+		return std::shared_ptr<Level>(new Level(gravity, downwardsMotion, gameArea));
 	}
-	shared_ptr<Level> Level::getInstance() {
-		return shared_ptr<Level>(new Level(false, 0));
+	std::shared_ptr<Level> Level::getInstance() {
+		std::shared_ptr<SDL_Rect> gameArea = std::shared_ptr<SDL_Rect>(new SDL_Rect());
+		gameArea->w = 800; //TODO - fixa så w och h är anpassade efter fönsterstorlek.
+		gameArea->h = 600;
+		gameArea->x = 0;
+		gameArea->y = 0;
+		return std::shared_ptr<Level>(new Level(false, 0, gameArea));
 	}
 
-	Level::Level(bool gravityOn, int downwardsMotion) {
+	Level::Level(bool gravityOn, int downwardsMotion, std::shared_ptr<SDL_Rect> gameArea) {
 		gravity = gravityOn;
 		gravityStrength = downwardsMotion;
+		playableArea = gameArea;
 	}//Konstruktor
 
 	void Level::add(shared_ptr<Sprite> s) {
@@ -50,7 +56,7 @@ namespace cwing {
 
 	void Level::tick() {
 		for (shared_ptr<Sprite> s : sprites) {
-			s->tick(sprites);
+			s->tick(sprites, playableArea);
 		}
 		prepareNextTick();
 	}
