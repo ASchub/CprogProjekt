@@ -22,9 +22,9 @@ void testFuncHotkey() {
 namespace cwing {
 	
 
-	Game::Game(std::shared_ptr<GameEngine> e)
+	Game::Game()
 	{
-		engine = e;
+		initGame();
 	}
 
 	void Game::initGame() {
@@ -39,40 +39,41 @@ namespace cwing {
 		level->add(StationarySprite::getInstance(500, 100, "./media/tree.bmp"));
 		level->add(player);
 		level->add(AnimatedSprite::getInstance(500, 500, 14, 20, 7, "./media/flamesheet.bmp"));
-		engine->add(level);
+		levels.push_back(level);
 
 
 		std::shared_ptr<Level> level2 = shared_ptr<Level>(Level::getInstance());
-		level2->add(StationarySprite::getInstance(0, 100, "./media/tree.bmp"));
-		level2->add(StationarySprite::getInstance(400, 100, "./media/tree.bmp"));
-		level2->add(StationarySprite::getInstance(400, 600, "./media/tree.bmp"));
+		level2->setGravity(true, 5);
+		level2->add(StationarySprite::getInstance(0, 100, "./media/platform.bmp"));
+		level2->add(StationarySprite::getInstance(200, 350, "./media/platform.bmp"));
+		level2->add(StationarySprite::getInstance(100, 600, "./media/platform.bmp"));
 		level2->add(player);
-		level2->add(AnimatedSprite::getInstance(300, 300, 14, 20, 7, "./media/flamesheet.bmp"));
-		engine->add(level2);
+		//level2->add(AnimatedSprite::getInstance(300, 300, 14, 20, 7, "./media/flamesheet.bmp"));
+		levels.push_back(level2);
 		
 	}
 
 	void Game::addHotkeys() {
-		engine->add(MemberHotkey<MovableSprite>::getInstance(SDLK_UP, player, &MovableSprite::moveUp));
-		engine->add(MemberHotkey<MovableSprite>::getInstance(SDLK_DOWN, player, &MovableSprite::moveDown));
-		engine->add(MemberHotkey<MovableSprite>::getInstance(SDLK_RIGHT, player, &MovableSprite::moveRight));
-		engine->add(MemberHotkey<MovableSprite>::getInstance(SDLK_LEFT, player, &MovableSprite::moveLeft));
+		hotkeys.push_back(MemberHotkey<MovableSprite>::getInstance(SDLK_UP, player, &MovableSprite::moveUp));
+		hotkeys.push_back(MemberHotkey<MovableSprite>::getInstance(SDLK_DOWN, player, &MovableSprite::moveDown));
+		hotkeys.push_back(MemberHotkey<MovableSprite>::getInstance(SDLK_RIGHT, player, &MovableSprite::moveRight));
+		hotkeys.push_back(MemberHotkey<MovableSprite>::getInstance(SDLK_LEFT, player, &MovableSprite::moveLeft));
 
 		//hotkey testing, using SPACE, F, M
 		std::shared_ptr<TestHotkey> h = shared_ptr<TestHotkey>(new TestHotkey());
-		engine->add(h);
+		hotkeys.push_back(h);
 
 		std::shared_ptr<FunctionHotkey> fh = FunctionHotkey::getInstance(SDLK_f, testFuncHotkey);
-		engine->add(fh);
+		hotkeys.push_back(fh);
 
 		std::shared_ptr<MemberHotkey<Hotkey>> mh = MemberHotkey<Hotkey>::getInstance(SDLK_m, fh, &Hotkey::perform);
-		engine->add(mh);
+		hotkeys.push_back(mh);
 	}
 
 	void Game::createPlayer() {
-		player = MovableSprite::getInstance(300, 100, "./media/gubbe.bmp");
+		player = MovableSprite::getInstance(200, 200, "./media/p1.bmp");
+		player->setAffectedByGravity(true);
 		player->setBounces(5);
-		engine->addPlayer(player);
 	}
 
 	Game::~Game()

@@ -15,10 +15,23 @@ namespace cwing {
 
 
 
-	GameEngine::GameEngine(int max_Fps, int min_Fps)
+	GameEngine::GameEngine(std::shared_ptr<Game> gameToLoad, int max_Fps, int min_Fps)
 	{
+		loadGame(gameToLoad);
 		maxFps = max_Fps;
 		minFps = min_Fps;
+		loadLevel(gameToLoad->getLevels().at(1));
+	}
+
+	void GameEngine::loadGame(std::shared_ptr<Game> gameToLoad) {
+		currentGame = gameToLoad;
+		hotkeys = currentGame->getHotkeys();
+		loadLevel(currentGame->getLevels().at(0));
+	}
+
+	void GameEngine::loadLevel(std::shared_ptr<Level> levelToLoad) {
+		currentLevel = levelToLoad;
+		//sprites = levelToLoad->getSprites();
 	}
 
 	/*
@@ -30,17 +43,17 @@ namespace cwing {
 		while (!sprites.empty()) {
 			sprites.pop_back();
 		}
-		while (!added.empty()) {
+		/*while (!added.empty()) {
 			added.pop_back();
 		}
 		while (!removed.empty()) {
 			removed.pop_back();
-		}
+		}*/
 	}
 
 	void GameEngine::add(shared_ptr<Sprite> s) {
 		cout << "sprite" << endl;
-		added.push_back(s);
+		currentLevel->add(s);
 	}
 
 	void GameEngine::add(shared_ptr<Hotkey> h) {
@@ -48,17 +61,17 @@ namespace cwing {
 		hotkeys.push_back(h);
 	}
 
-	void GameEngine::add(shared_ptr<Level> l) {
+	/*void GameEngine::add(shared_ptr<Level> l) {
 		cout << "level" << endl;
 		levels.push_back(l);
-	}
+	}*/
 
 	void GameEngine::addPlayer(shared_ptr<Sprite> p) {
 		player = p;
 	}
 
 	void GameEngine::remove(shared_ptr<Sprite> s) {
-		removed.push_back(s);
+		currentLevel->remove(s);
 	}
 
 	void GameEngine::setMaxFps(int i) {
@@ -81,7 +94,7 @@ namespace cwing {
 				if (quit)
 					break;
 				SDL_RenderClear(sys.getRen()); //Behöver först rensa allt gammalt om man ska rita på nytt
-				levels.at(currentLevel)->tick(); //kör tick-metod inuti leveln, inklusive ritar ut objekt
+				currentLevel->tick(); //kör tick-metod inuti leveln, inklusive ritar ut objekt
 				SDL_RenderPresent(sys.getRen());
 				nextTick += (1000 / maxFps);
 			} //kör denna kod om vi kommit fram till nästa tick
@@ -110,7 +123,7 @@ namespace cwing {
 		return false;
 	}
 
-	void GameEngine::nextLevel() {
+	/*void GameEngine::nextLevel() {
 		currentLevel++;
-	}
+	}*/
 } //cwing

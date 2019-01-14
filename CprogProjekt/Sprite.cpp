@@ -44,6 +44,7 @@ namespace cwing {
 	bool Sprite::checkSpriteCollision(shared_ptr<Sprite> other) {
 		shared_ptr<SDL_Rect> intersectionResult = shared_ptr<SDL_Rect>(new SDL_Rect());
 		if (checkRectCollision(other->getRect(), intersectionResult) && isSolid() && other->isSolid()) {
+			cout << "collision" << endl;
 				handleCollision(intersectionResult);
 				other->handleCollision(intersectionResult);
 				return true;
