@@ -44,6 +44,7 @@ namespace cwing {
 
 		//elasticity
 		void setBounces(int b) { bounces = b; }
+		void setBounceRate(int b) { bounceRate = b; }
 
 		//gravity stuff
 		bool isAffectedByGravity() { return affectedByGravity; }
@@ -67,6 +68,8 @@ namespace cwing {
 
 		//elasticity
 		int bounces = 0; //default is that it doesnt apply
+		int bounceRate = 0; //default is that it doesn't apply
+		bool bouncing = false; //defalult is that it doesn't apply
 	private:
 		shared_ptr<SDL_Rect> rect; //definitionen av en rektangel, som kommer innehålla våran sprite
 		SDL_Texture* texture = nullptr;

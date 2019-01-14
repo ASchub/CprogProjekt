@@ -44,7 +44,6 @@ namespace cwing {
 	bool Sprite::checkSpriteCollision(shared_ptr<Sprite> other) {
 		shared_ptr<SDL_Rect> intersectionResult = shared_ptr<SDL_Rect>(new SDL_Rect());
 		if (checkRectCollision(other->getRect(), intersectionResult) && isSolid() && other->isSolid()) {
-			cout << "collision" << endl;
 				handleCollision(intersectionResult);
 				other->handleCollision(intersectionResult);
 				return true;
@@ -71,7 +70,8 @@ namespace cwing {
 			if (xDiff >= 0) { //om spriten krockar med högra kanten
 				getRect()->x -= wDiff; //justera x-position med så mycket som spriten är utanför frame
 			} else{ //spriten krockar med vänstra kanten
-				getRect()->x = intersectionResult->x; //sätt x-position till kanten
+				getRect()->x += wDiff;
+				//getRect()->x = intersectionResult->x; //sätt x-position till kanten
 			}
 		}
 		if (hDiff != 0) { //om någon del av spriten är utanför areans y-axel

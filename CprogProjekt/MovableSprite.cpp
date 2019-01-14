@@ -38,6 +38,10 @@ namespace cwing {
 		setXY(getRect()->x - speed, getRect()->y);
 	}
 
+	void MovableSprite::jump() {
+		getRect()->y -= 10;
+	}
+
 	void MovableSprite::resetMoveThisTick() {
 		movedThisTick = false;
 		yVel = 0;
@@ -50,7 +54,7 @@ namespace cwing {
 	}
 
 	void MovableSprite::handleCollision(std::shared_ptr<SDL_Rect> intersection) {
-		int move = speed;
+		/*int move = speed;
 		if (bounces > 0) {
 			move = speed * (1 + bounceRate);
 		}
@@ -63,7 +67,24 @@ namespace cwing {
 		else if (xVel < 0)
 			setXY(getRect()->x + move, getRect()->y);
 
-		resetMoveThisTick();
+		resetMoveThisTick(); */
+
+		if (intersection->w >= intersection->h) { //krock huvudsakligen vertikalt, eller lika mycket vertikalt som horisontellt
+			if (getRect()->y == intersection->y) { //krockar med andra spritens nederkant
+				getRect()->y += intersection->h;
+			}
+			else { // krock med andra spritens överkant
+				getRect()->y -= intersection->h;
+			}
+		}
+		else { // krock huvudsakligen horisontellt
+			if (getRect()->x == intersection->x) { // krock med andra spritens högerkant
+				getRect()->x += intersection->w;
+			}
+			else { //krock med andra spritens nederkant
+				getRect()->x -= intersection->w;
+			}
+		}
 	}
 
 

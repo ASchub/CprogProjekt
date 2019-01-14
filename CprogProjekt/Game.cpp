@@ -58,7 +58,10 @@ namespace cwing {
 		hotkeys.push_back(MemberHotkey<MovableSprite>::getInstance(SDLK_DOWN, player, &MovableSprite::moveDown));
 		hotkeys.push_back(MemberHotkey<MovableSprite>::getInstance(SDLK_RIGHT, player, &MovableSprite::moveRight));
 		hotkeys.push_back(MemberHotkey<MovableSprite>::getInstance(SDLK_LEFT, player, &MovableSprite::moveLeft));
-
+		hotkeys.push_back(MemberHotkey<MovableSprite>::getInstance(SDLK_SPACE, player, &MovableSprite::jump));
+		
+		
+		/*
 		//hotkey testing, using SPACE, F, M
 		std::shared_ptr<TestHotkey> h = shared_ptr<TestHotkey>(new TestHotkey());
 		hotkeys.push_back(h);
@@ -67,7 +70,7 @@ namespace cwing {
 		hotkeys.push_back(fh);
 
 		std::shared_ptr<MemberHotkey<Hotkey>> mh = MemberHotkey<Hotkey>::getInstance(SDLK_m, fh, &Hotkey::perform);
-		hotkeys.push_back(mh);
+		hotkeys.push_back(mh);*/
 	}
 
 	void Game::createPlayer() {

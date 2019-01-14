@@ -20,13 +20,14 @@ namespace cwing {
 		void moveDown();
 		void moveRight();
 		void moveLeft();
+		void jump();
 	protected:
 		MovableSprite(int x, int y, const char path[]);
 		//virtual void handleCollision(shared_ptr<const Sprite> other);
 	private:
 		int xVel = 0;
 		int yVel = 0;
-		int bounceRate = 1;
+		bool bouncing;
 	};
 
 } //cwing
