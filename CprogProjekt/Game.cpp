@@ -21,6 +21,22 @@ protected:
 	Player(int x, int y, const char path[]) : MovableSprite(x, y, path) {}
 };
 
+class AppleSprite : public cwing::StationarySprite {
+public:
+	static shared_ptr<AppleSprite> getInstance() {
+		return shared_ptr<AppleSprite>(new AppleSprite(400, 400, "./media/apple.bmp"));
+	}
+	void handleCollision(std::shared_ptr<SDL_Rect> intersection) {
+		getRect()->y = 0;
+		getRect()->x = 0;
+	}
+
+protected:
+	AppleSprite(int x, int y, const char path[]) : StationarySprite(x, y, path) {}
+};
+
+
+
 
 class TestHotkey : public Hotkey {
 public:
@@ -56,6 +72,7 @@ namespace cwing {
 		level->add(StationarySprite::getInstance(500, 100, "./media/tree.bmp"));
 		level->add(player);
 		level->add(AnimatedSprite::getInstance(500, 500, 14, 20, 7, "./media/flamesheet.bmp"));
+		level->add(AppleSprite::getInstance());
 		levels.push_back(level);
 
 
@@ -71,11 +88,11 @@ namespace cwing {
 	}
 
 	void Game::addHotkeys() {
-		hotkeys.push_back(MemberHotkey<MovableSprite>::getInstance(SDLK_UP, player, &MovableSprite::moveUp));
-		hotkeys.push_back(MemberHotkey<MovableSprite>::getInstance(SDLK_DOWN, player, &MovableSprite::moveDown));
-		hotkeys.push_back(MemberHotkey<MovableSprite>::getInstance(SDLK_RIGHT, player, &MovableSprite::moveRight));
-		hotkeys.push_back(MemberHotkey<MovableSprite>::getInstance(SDLK_LEFT, player, &MovableSprite::moveLeft));
-		hotkeys.push_back(MemberHotkey<MovableSprite>::getInstance(SDLK_SPACE, player, &MovableSprite::jump));
+		hotkeys.push_back(MemberHotkey<MovableSprite>::getInstance(SDLK_UP, player, &Player::moveUp));
+		hotkeys.push_back(MemberHotkey<MovableSprite>::getInstance(SDLK_DOWN, player, &Player::moveDown));
+		hotkeys.push_back(MemberHotkey<MovableSprite>::getInstance(SDLK_RIGHT, player, &Player::moveRight));
+		hotkeys.push_back(MemberHotkey<MovableSprite>::getInstance(SDLK_LEFT, player, &Player::moveLeft));
+		hotkeys.push_back(MemberHotkey<MovableSprite>::getInstance(SDLK_SPACE, player, &Player::jump));
 		
 		/*
 		//hotkey testing, using SPACE, F, M
