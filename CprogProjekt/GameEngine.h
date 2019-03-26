@@ -13,19 +13,20 @@ namespace cwing {
 	public:
 		GameEngine(std::shared_ptr<Game> game, int maxFps = 70, int minFps = 5);
 		void add(std::shared_ptr<Sprite> s); //lägger till sprites i loopen
-		void add(std::shared_ptr<Hotkey> h);
-		void add(std::shared_ptr<Level> l);
+		void add(std::shared_ptr<Hotkey> h); //lägger till hotkeys
+		void add(std::shared_ptr<Level> l);	//lägger till levels
 		void remove(std::shared_ptr<Sprite> s); //tar bort sprites från loopen
-		//void remove(shared_ptr<Hotkey> h);  //should implement this...
+		//void remove(shared_ptr<Hotkey> h);  //TODO: should implement this...
 		void setMaxFps(int i); //sätter eget maxFps
 		void setMinFps(int i); //sätter eget minFps
 		void run(); //startar spelloopen
 		//void nextLevel();
-		void addPlayer(std::shared_ptr<Sprite> p);
+		void addPlayer(std::shared_ptr<Sprite> p); //lägger till spelarobjekt
 		~GameEngine();
 	private:
 		bool handleEvents(); //returns TRUE if quit should be true
 		void checkHotkeys(SDL_Event &event);
+		void inputText();
 		std::vector<std::shared_ptr<Hotkey>> hotkeys;
 		std::vector<std::shared_ptr<Sprite>> sprites; //behöver vara pekare till sprite då det är en superklass, om man skickar en subklass och den tar emot hela objektet slicar den ned objektet till enbart sprite..
 		//std::vector<shared_ptr<Sprite>> added, removed; //för att ta bort saker under körning, skapar seperata vektorer för att hålla koll på vad som ska raderas/läggas på vid nästa tick

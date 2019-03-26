@@ -12,9 +12,6 @@
 
 
 namespace cwing {
-
-
-
 	GameEngine::GameEngine(std::shared_ptr<Game> gameToLoad, int max_Fps, int min_Fps)
 	{
 		loadGame(gameToLoad);
@@ -113,6 +110,39 @@ namespace cwing {
 		}
 	}
 
+	void GameEngine::inputText() { //TODO
+		bool done = false;
+		bool renderText = false;
+		SDL_StartTextInput;
+		while (!done) {
+			SDL_Event event;
+			if (SDL_PollEvent(&event)) {
+				switch (event.type) {
+				case SDLK_KP_ENTER:
+					/* Quit */
+					done = true;
+					break;
+				case SDLK_BACKSPACE:
+					if ()
+						break;
+				case SDL_TEXTINPUT:
+					/* Add new text onto the end of our text */
+					
+					break;
+				case SDL_TEXTEDITING:
+					/*
+					Update the composition text.
+					Update the cursor position.
+					Update the selection length (if any).
+					*/
+
+					break;
+				}
+			}
+			SDL_RenderClear(sys.getRen());
+			SDL_RenderPresent(sys.getRen());
+		}
+	} //ENDTODO
 
 	bool GameEngine::handleEvents() { //returns TRUE if quit should be true
 		while (SDL_PollEvent(&event)) {

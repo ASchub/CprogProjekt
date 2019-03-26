@@ -39,7 +39,8 @@ namespace cwing {
 	}
 
 	void MovableSprite::jump() {
-		getRect()->y -= 10;
+		cout << "jump" << endl;
+		getRect()->y -= 50;
 	}
 
 	void MovableSprite::resetMoveThisTick() {
