@@ -7,6 +7,10 @@
 #include "MemberHotkey.h"
 #include <memory>
 
+
+
+
+
 class TestHotkey : public Hotkey {
 public:
 	TestHotkey() :Hotkey(SDLK_SPACE) {}
@@ -20,7 +24,14 @@ void testFuncHotkey() {
 }
 
 namespace cwing {
-	
+
+	// Create subclass of MovableSprite so we can make a general mouseDown handler for the player controlled character, here it just prints to console.
+	class Player : public MovableSprite {
+	public:
+		void mouseDown(const SDL_Event& event) {
+			cout << "MouseDown registered" << endl;
+		}
+	};
 
 	Game::Game()
 	{
@@ -59,7 +70,7 @@ namespace cwing {
 		hotkeys.push_back(MemberHotkey<MovableSprite>::getInstance(SDLK_RIGHT, player, &MovableSprite::moveRight));
 		hotkeys.push_back(MemberHotkey<MovableSprite>::getInstance(SDLK_LEFT, player, &MovableSprite::moveLeft));
 		hotkeys.push_back(MemberHotkey<MovableSprite>::getInstance(SDLK_SPACE, player, &MovableSprite::jump));
-		
+		hotkeys.push_back(MemberHotkey<MovableSprite>::getInstance(SDL_MOUSEBUTTONDOWN, player, &MovableSprite::jump));
 		
 		/*
 		//hotkey testing, using SPACE, F, M
