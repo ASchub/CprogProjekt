@@ -17,7 +17,7 @@ namespace cwing {
 		loadGame(gameToLoad);
 		maxFps = max_Fps;
 		minFps = min_Fps;
-		loadLevel(gameToLoad->getLevels().at(1));
+		loadLevel(gameToLoad->getLevels().at(0));
 	}
 
 	void GameEngine::loadGame(std::shared_ptr<Game> gameToLoad) {
@@ -146,9 +146,21 @@ namespace cwing {
 
 	bool GameEngine::handleEvents() { //returns TRUE if quit should be true
 		while (SDL_PollEvent(&event)) {
-			if (event.type == SDL_QUIT)
-				return true;
-			checkHotkeys(event);
+			switch (event.type) {
+			case SDL_QUIT: return true;
+			case SDL_MOUSEBUTTONDOWN:
+				for (shared_ptr<Sprite> s : currentLevel->getSprites())
+					s->mouseDown(event);
+				break;
+			case SDL_MOUSEBUTTONUP:
+				for (shared_ptr<Sprite> s : currentLevel->getSprites())
+					s->mouseUp(event);
+				break;
+			case SDL_KEYDOWN:
+				checkHotkeys(event);
+				break;
+			}
+			
 		} //while
 		return false;
 	}

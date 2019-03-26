@@ -17,6 +17,7 @@ namespace cwing {
 		void tick();
 		Level(const Level&) = delete; //Copy-konstruktorn, skall inte finnas pga värdesemantik
 		const Level& operator=(const Sprite&) = delete; //ingen operatoröverlagring
+		std::vector<shared_ptr<Sprite>> getSprites() { return sprites; }
 
 		//gravity stuff
 		void setGravity(bool g, int downwardsMotion);

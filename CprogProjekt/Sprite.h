@@ -17,8 +17,8 @@ namespace cwing {
 		//virtual void handleCollision(shared_ptr<const Sprite> other) {}
 		virtual void mouseDown(const SDL_Event& event) {}
 		virtual void mouseUp(const SDL_Event& event) {}
-		virtual void keyDown(const SDL_Event& event) {}
-		virtual void keyUp(const SDL_Event& event) {}
+		//virtual void keyDown(const SDL_Event& event) {}
+		//virtual void keyUp(const SDL_Event& event) {}
 		virtual void resetMoveThisTick() {}
 		shared_ptr<SDL_Rect> getRect() const { return rect; }
 		virtual void draw() const = 0; //helt virtuel och abstrakt, alla objekt måste ritas ut så kan inte göra tom deklaration (=0)
