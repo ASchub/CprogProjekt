@@ -10,19 +10,20 @@ namespace cwing {
 	class TextBox : public Sprite
 	{
 	public:
-		static shared_ptr<TextBox> getInstance(int x, int y, const char path[]); // only supports bmp
+		static shared_ptr<TextBox> getInstance(int x, int y, const char path[]); // only supports bmpd
 		void draw() const;
 		void textInput(SDL_Event& event);
-		void textEdit(SDL_Event& event);
+		void backspace();
+		std::shared_ptr<std::string> getText() { return inputText; }
+		~TextBox();
 	protected:
 		TextBox(int x, int y, const char path[]);
 	private:
-		SDL_Color* textColor;
-		std::string* inputText;
-		char* text;
-		char* composition;
-		Sint32* cursor;
-		Sint32* selection_len;
+		bool loadTextureFromText(std::string text, SDL_Color color);
+		void reRender();
+		SDL_Color textColor = { 0,0,0,0xFF };
+		SDL_Texture* inputTexture = nullptr;
+		std::shared_ptr<std::string> inputText;
 	};
 
 }

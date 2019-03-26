@@ -5,6 +5,7 @@
 #include "MovableSprite.h"
 #include "StationarySprite.h"
 #include "AnimatedSprite.h"
+#include "TextBox.h"
 
 #include <iostream>
 #include <memory>
@@ -24,6 +25,7 @@ namespace cwing {
 		currentGame = gameToLoad;
 		hotkeys = currentGame->getHotkeys();
 		loadLevel(currentGame->getLevels().at(0));
+		textbox = currentGame->getTextBox();
 	}
 
 	void GameEngine::loadLevel(std::shared_ptr<Level> levelToLoad) {
@@ -35,7 +37,7 @@ namespace cwing {
 	Vectorerna försvinner automatiskt, men vi måste gå igenom vectorn och radera allt innehåll
 	added, removed bör alltid vara tomma om avstängning kallats, men ifall något gick fel mitt i går vi även igenom dem...
 	*/
-	GameEngine::~GameEngine() 
+	GameEngine::~GameEngine()
 	{
 		while (!sprites.empty()) {
 			sprites.pop_back();
@@ -92,6 +94,7 @@ namespace cwing {
 					break;
 				SDL_RenderClear(sys.getRen()); //Behöver först rensa allt gammalt om man ska rita på nytt
 				currentLevel->tick(); //kör tick-metod inuti leveln, inklusive ritar ut objekt
+				textbox->draw();
 				SDL_RenderPresent(sys.getRen());
 				nextTick += (1000 / maxFps);
 			} //kör denna kod om vi kommit fram till nästa tick
@@ -110,61 +113,53 @@ namespace cwing {
 		}
 	}
 
-	void GameEngine::inputText() { //TODO
-		bool done = false;
-		bool renderText = false;
-		SDL_StartTextInput;
-		while (!done) {
-			SDL_Event event;
-			if (SDL_PollEvent(&event)) {
-				switch (event.type) {
-				case SDLK_KP_ENTER:
-					/* Quit */
-					done = true;
-					break;
-				case SDLK_BACKSPACE:
-					if ()
-						break;
-				case SDL_TEXTINPUT:
-					/* Add new text onto the end of our text */
-					
-					break;
-				case SDL_TEXTEDITING:
-					/*
-					Update the composition text.
-					Update the cursor position.
-					Update the selection length (if any).
-					*/
+	bool GameEngine::handleEvents() { //returns TRUE if quit should be true
+		SDL_Point p;
 
+		while (SDL_PollEvent(&event)) {
+			if (!inputText) {
+				switch (event.type) {
+				case SDL_QUIT: return true;
+				case SDL_MOUSEBUTTONDOWN:
+					cout << "mousedown" << endl;
+					p = { event.button.x, event.button.y };
+					if (SDL_PointInRect(&p, textbox->getRect().get())) {
+						inputText = true;
+						SDL_StartTextInput();
+					}
+
+					for (shared_ptr<Sprite> s : currentLevel->getSprites())
+						s->mouseDown(event);
+					break;
+				case SDL_MOUSEBUTTONUP:
+					for (shared_ptr<Sprite> s : currentLevel->getSprites())
+						s->mouseUp(event);
+					break;
+				case SDL_KEYDOWN:
+					checkHotkeys(event);
 					break;
 				}
-			}
-			SDL_RenderClear(sys.getRen());
-			SDL_RenderPresent(sys.getRen());
-		}
-	} //ENDTODO
 
-	bool GameEngine::handleEvents() { //returns TRUE if quit should be true
-		while (SDL_PollEvent(&event)) {
-			switch (event.type) {
-			case SDL_QUIT: return true;
-			case SDL_MOUSEBUTTONDOWN:
-				for (shared_ptr<Sprite> s : currentLevel->getSprites())
-					s->mouseDown(event);
-				break;
-			case SDL_MOUSEBUTTONUP:
-				for (shared_ptr<Sprite> s : currentLevel->getSprites())
-					s->mouseUp(event);
-				break;
-			case SDL_KEYDOWN:
-				checkHotkeys(event);
-				break;
 			}
-			
-		} //while
+			else {
+
+				if (event.key.keysym.sym == SDLK_RETURN) {
+					inputText = false;
+					SDL_StopTextInput();
+				}
+				else if (event.key.keysym.sym == SDLK_BACKSPACE) {
+					textbox->backspace();
+
+				}
+				else if(event.type == SDL_TEXTINPUT ){
+					textbox->textInput(event);
+				}
+
+			}
+
+		}
 		return false;
 	}
-
 	/*void GameEngine::nextLevel() {
 		currentLevel++;
 	}*/

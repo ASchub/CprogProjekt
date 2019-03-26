@@ -5,7 +5,9 @@
 #include "Hotkey.h"
 #include "FunctionHotkey.h"
 #include "MemberHotkey.h"
+#include "TextBox.h"
 #include <memory>
+
 
 
 // Create subclass of MovableSprite so we can make a general mouseDown handler for the player controlled character, here it just prints to console.
@@ -64,6 +66,7 @@ namespace cwing {
 		createPlayer();
 		addLevels();
 		addHotkeys();
+		textbox = TextBox::getInstance(0, 0, "./media/TextBox.bmp");
 	}
 
 	void Game::addLevels() {

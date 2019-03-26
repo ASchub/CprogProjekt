@@ -3,6 +3,7 @@
 #include "Hotkey.h"
 #include "Level.h"
 #include "Game.h"
+#include "TextBox.h"
 
 #include <vector>
 #include <memory>
@@ -26,8 +27,8 @@ namespace cwing {
 	private:
 		bool handleEvents(); //returns TRUE if quit should be true
 		void checkHotkeys(SDL_Event &event);
-		void inputText();
 		std::vector<std::shared_ptr<Hotkey>> hotkeys;
+		std::shared_ptr<TextBox> textbox;
 		std::vector<std::shared_ptr<Sprite>> sprites; //behöver vara pekare till sprite då det är en superklass, om man skickar en subklass och den tar emot hela objektet slicar den ned objektet till enbart sprite..
 		//std::vector<shared_ptr<Sprite>> added, removed; //för att ta bort saker under körning, skapar seperata vektorer för att hålla koll på vad som ska raderas/läggas på vid nästa tick
 		//std::vector<shared_ptr<Level>> levels;
@@ -37,6 +38,7 @@ namespace cwing {
 		void loadGame(std::shared_ptr<Game> gameToLoad);
 		int maxFps;
 		int minFps;
+		bool inputText = false;
 		SDL_Event event;
 		//int currentLevel = 0; // starts at 0, updates when level is updated
 		std::shared_ptr<Sprite> player;
