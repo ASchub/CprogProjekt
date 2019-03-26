@@ -8,7 +8,18 @@
 #include <memory>
 
 
-
+// Create subclass of MovableSprite so we can make a general mouseDown handler for the player controlled character, here it just prints to console.
+class Player : public cwing::MovableSprite {
+public:
+	static shared_ptr<Player> getInstance() {
+		return shared_ptr<Player>(new Player(200, 200, "./media/p1.bmp"));
+	}
+	void mouseDown(const SDL_Event& event) {
+		cout << "MouseDown registered" << endl;
+	}
+protected:
+	Player(int x, int y, const char path[]) : MovableSprite(x, y, path) {}
+};
 
 
 class TestHotkey : public Hotkey {
@@ -25,13 +36,8 @@ void testFuncHotkey() {
 
 namespace cwing {
 
-	// Create subclass of MovableSprite so we can make a general mouseDown handler for the player controlled character, here it just prints to console.
-	class Player : public MovableSprite {
-	public:
-		void mouseDown(const SDL_Event& event) {
-			cout << "MouseDown registered" << endl;
-		}
-	};
+
+
 
 	Game::Game()
 	{
@@ -70,7 +76,6 @@ namespace cwing {
 		hotkeys.push_back(MemberHotkey<MovableSprite>::getInstance(SDLK_RIGHT, player, &MovableSprite::moveRight));
 		hotkeys.push_back(MemberHotkey<MovableSprite>::getInstance(SDLK_LEFT, player, &MovableSprite::moveLeft));
 		hotkeys.push_back(MemberHotkey<MovableSprite>::getInstance(SDLK_SPACE, player, &MovableSprite::jump));
-		hotkeys.push_back(MemberHotkey<MovableSprite>::getInstance(SDL_MOUSEBUTTONDOWN, player, &MovableSprite::jump));
 		
 		/*
 		//hotkey testing, using SPACE, F, M
@@ -85,7 +90,8 @@ namespace cwing {
 	}
 
 	void Game::createPlayer() {
-		player = MovableSprite::getInstance(200, 200, "./media/p1.bmp");
+		//(200, 200, "./media/p1.bmp")
+		player = Player::getInstance();
 		player->setAffectedByGravity(true);
 		player->setBounces(5);
 	}
