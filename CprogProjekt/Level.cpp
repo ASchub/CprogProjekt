@@ -100,6 +100,8 @@ namespace cwing {
 			added.pop_back();
 		}
 
+		completeLevel();
+
 		//kör gravitation inför nästa tick, förutsatt att gravitationen är på
 		if (gravity) {
 			runGravity();

@@ -136,8 +136,6 @@ namespace cwing {
 			typing = true;
 			SDL_StartTextInput();
 		}
-
-
 	}
 
 

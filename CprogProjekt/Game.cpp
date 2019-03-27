@@ -3,6 +3,7 @@
 #include "MovableSprite.h"
 #include "StationarySprite.h"
 #include "Hotkey.h"
+#include "Level.h"
 #include "FunctionHotkey.h"
 #include "MemberHotkey.h"
 #include "TextBox.h"
@@ -37,6 +38,37 @@ public:
 
 protected:
 	AppleSprite(int x, int y, const char path[]) : MovableSprite(x, y, path) {}
+};
+
+class LevelOne : public cwing::Level {
+public:
+	static std::shared_ptr<LevelOne> getInstance(bool gravity, int downwardsMotion, std::shared_ptr<SDL_Rect> gameArea) {
+		return std::shared_ptr<LevelOne>(new LevelOne(gravity, downwardsMotion, gameArea));
+	}
+
+	static std::shared_ptr<LevelOne> getInstance() {
+		std::shared_ptr<SDL_Rect> gameArea = std::shared_ptr<SDL_Rect>(new SDL_Rect());
+		gameArea->w = 800; //TODO - fixa så w och h är anpassade efter fönsterstorlek.
+		gameArea->h = 600;
+		gameArea->x = 0;
+		gameArea->y = 0;
+		return std::shared_ptr<LevelOne>(new LevelOne(false, 0, gameArea));
+	}
+protected:
+	LevelOne(bool gravityOn, int downwardsMotion, std::shared_ptr<SDL_Rect> gameArea) : Level(gravityOn, downwardsMotion, gameArea){ }
+	void completeLevel() {
+		int apples = 0;
+		for (shared_ptr<cwing::Sprite> s : sprites) {
+			if (dynamic_pointer_cast<AppleSprite>(s)) {
+				apples++;
+				cout << "OK";
+			}
+				
+		}
+		if(apples == 0)
+			completed = true;
+	}
+
 };
 
 
@@ -75,7 +107,7 @@ namespace cwing {
 
 
 
-		std::shared_ptr<Level> level = shared_ptr<Level>(Level::getInstance());
+		std::shared_ptr<LevelOne> level = shared_ptr<LevelOne>(LevelOne::getInstance());
 		level->setGravity(true, 5);
 		level->add(StationarySprite::getInstance(0, 100, "./media/platform.bmp"));
 		level->add(StationarySprite::getInstance(200, 350, "./media/platform.bmp"));

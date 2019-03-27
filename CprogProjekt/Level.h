@@ -18,7 +18,7 @@ namespace cwing {
 		Level(const Level&) = delete; //Copy-konstruktorn, skall inte finnas pga värdesemantik
 		const Level& operator=(const Sprite&) = delete; //ingen operatoröverlagring
 		std::vector<shared_ptr<Sprite>> getSprites() { return sprites; }
-
+		bool levelCompleted() const { return completed; };
 		//gravity stuff
 		void setGravity(bool g, int downwardsMotion);
 		bool getGravity() { return &gravity; }
@@ -26,11 +26,19 @@ namespace cwing {
 	protected:
 		Level(bool gravityOn, int downwardsMotion, std::shared_ptr<SDL_Rect> gameArea); //Konstruktor
 
-	private:
+		// överskugga denna metod för att bestämma när en level ska bytas, genom att sätta "completed = true" kommer nästa level laddas vid nästa tick.
+		virtual void completeLevel() { }
+
 		std::vector<shared_ptr<Sprite>> sprites; //minnesläckage?
 		std::vector<shared_ptr<Sprite>> added, removed;
 
 		std::shared_ptr<SDL_Rect> playableArea;
+		bool completed = false;
+
+	private:
+
+
+
 
 		//gravity stuff
 		void runGravity();
