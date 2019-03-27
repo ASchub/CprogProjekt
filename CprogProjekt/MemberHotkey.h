@@ -9,7 +9,7 @@ namespace cwing {
 	{
 	public:
 		T* getObject() { return object; }
-		bool perform(bool gameIsPaused) { if (!gameIsPaused || gameIsPaused && reactWhenPaused) { (object.get()->*doIt)(); } return changePauseUnpause; } //might need parameter "(Hotkey* source)" which would need extra handling
+		bool perform(bool gameIsPaused) { if (!gameIsPaused || gameIsPaused && reactWhenPaused) { (object.get()->*doIt)(); } return changePauseUnpause; }
 		static std::shared_ptr<MemberHotkey> getInstance(SDL_Keycode k, std::shared_ptr<T> obj, void (T::*f)()) {
 			return std::shared_ptr<MemberHotkey>(new MemberHotkey<T>(k, obj, f));
 		}

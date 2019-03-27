@@ -42,7 +42,6 @@ namespace cwing {
 	}
 
 	int Sprite::tick(std::vector<shared_ptr<Sprite>> sprites, std::shared_ptr<SDL_Rect> gameArea, bool gameIsPaused) {
-		//checkCollideWithWindow();
 		if (!gameIsPaused) {
 			automaticBehaviour();
 			checkBoundaryCollision(gameArea);
@@ -50,7 +49,6 @@ namespace cwing {
 			for (shared_ptr<Sprite> s : sprites) {
 				if (this != s.get()) {
 					checkSpriteCollision(s);
-					//checkCollision(s);
 				}
 			}
 		draw();
@@ -87,7 +85,6 @@ namespace cwing {
 				getRect()->x -= wDiff; //justera x-position med så mycket som spriten är utanför frame
 			} else{ //spriten krockar med vänstra kanten
 				getRect()->x += wDiff;
-				//getRect()->x = intersectionResult->x; //sätt x-position till kanten
 			}
 		}
 		if (hDiff != 0) { //om någon del av spriten är utanför areans y-axel
@@ -105,73 +102,5 @@ namespace cwing {
 		}
 		return false;
 	}
-
-
-
-	/*void Sprite::checkCollideWithWindow() {
-		int left, right, top, bottom;
-		int winLeft, winRight, winTop, winBottom;
-
-		left = rect->x;
-		right = rect->x + rect->w;
-		top = rect->y;
-		bottom = rect->y + rect->h;
-
-		winLeft = 0;
-		winRight = SDL_GetWindowSurface(sys.getWin())->w;
-		winTop = 0;
-		winBottom = SDL_GetWindowSurface(sys.getWin())->h;
-		if (left <= winLeft) {
-			rect->x = 0;
-		}
-		if (right >= winRight) {
-			rect->x = winRight - rect->w;
-		}
-		if (top <= winTop) {
-			rect->y = 0;
-		}
-		if (bottom >= winBottom) {
-			rect->y = winBottom - rect->h;
-		}
-	}
-
-	bool Sprite::checkCollision(std::shared_ptr<const Sprite> other) {
-		//The sides of the rectangles
-		int left, leftO;
-		int right, rightO;
-		int top, topO;
-		int bottom, bottomO;
-		shared_ptr<SDL_Rect> rect = getRect();
-		shared_ptr<SDL_Rect> oRect = other->getRect();
-
-		//Calculate the sides of rect A
-		left = rect->x;
-		right = rect->x + rect->w;
-		top = rect->y;
-		bottom = rect->y + rect->h;
-
-		//Calculate the sides of rect B
-		leftO = oRect->x;
-		rightO = oRect->x + oRect->w;
-		topO = oRect->y;
-		bottomO = oRect->y + oRect->h;
-
-		//If any of the sides from A are outside of B
-		if (bottom <= topO) {
-			return false;
-		}
-		if (top >= bottomO) {
-			return false;
-		}
-		if (right <= leftO) {
-			return false;
-		}
-		if (left >= rightO) {
-			return false;
-		}
-
-		handleCollision(other);
-		return true;
-	}*/
 
 } //cwing

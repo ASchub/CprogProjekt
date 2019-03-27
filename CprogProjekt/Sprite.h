@@ -9,70 +9,108 @@ using namespace std;
 
 namespace cwing {
 
+	/*
+	Virtual abstract class Sprite.
+	*/
 	class Sprite
 	{
 	public:
 		virtual ~Sprite() { SDL_DestroyTexture(texture);};
-		//då denna är för subklasserna, dvs virtual, ej abstrakt (=0) men vi deklarerar en tom metod för de subklasser som inte vill ha en
-		//virtual void handleCollision(shared_ptr<const Sprite> other) {}
-		//virtual void mouseDown(const SDL_Event& event) {}
-		//virtual void mouseUp(const SDL_Event& event) {}
+		/*
+		handleInput:
+		Returns true if the game should be paused, takes an SDL_Event to evaluate and a bool gameIsPaused which will help it determine if it should act.
+		Default implementation is that it does nothing and returns false.
+		*/
 		virtual bool handleInput(const SDL_Event& event, bool gameIsPaused) { return false; }
-		//virtual void keyDown(const SDL_Event& event) {}
-		//virtual void keyUp(const SDL_Event& event) {}
+
+		/*
+		resetMoveThisTick:
+		Implemented in MovableSprite
+		*/
 		virtual void resetMoveThisTick() {}
-		shared_ptr<SDL_Rect> getRect() const { return rect; }
-		virtual void draw() const = 0; //helt virtuel och abstrakt, alla objekt måste ritas ut så kan inte göra tom deklaration (=0)
-		Sprite(const Sprite&) = delete; //Copy konstruktorn, ska ej finnas då vi inte vill kunna skapa objekt av denna abstrakta klass
-		const Sprite& operator=(const Sprite&) = delete; //samma som ovan, ingen operator överlagring
+
+		/*
+		draw:
+		virtual abstract method, all derived classes must implement this method, should implement methods for drawing the Sprite.
+		*/
+		virtual void draw() const = 0;
+
+		/*
+		deleting copy constructors to prevent errors.
+		*/
+		Sprite(const Sprite&) = delete;
+		const Sprite& operator=(const Sprite&) = delete;
+
+		/*
+		handleCollision:
+		virtual method. Implement this in subclass to allow responses to collisions with other Sprites.
+		*/
 		virtual void handleCollision(std::shared_ptr<SDL_Rect> intersection) {}
+
+		/*
+		getters/setters and state checking methods.
+		*/
+		shared_ptr<SDL_Rect> getRect() const { return rect; }
 		bool isSolid() const { return solid; }
 		void setSolid(bool isSolid) { solid = isSolid; }
 		bool shouldBeDeleted() const { return toBeDeleted; };
 		virtual void automaticBehaviour() {}
-
-		//void checkCollideWithWindow();
-		int tick(std::vector<shared_ptr<Sprite>> sprites, std::shared_ptr<SDL_Rect> gameArea, bool gameIsPaused); //returns 0 if all went well.
-
-		//elasticity
+		// A-grade things we did not have time to implement correctly {
 		void setBounces(int b) { bounces = b; }
 		void setBounceRate(int b) { bounceRate = b; }
-
-		//gravity stuff
 		bool isAffectedByGravity() { return affectedByGravity; }
-		void setAffectedByGravity(bool isAffected) { affectedByGravity = isAffected; } //möjlighet att välja om sprite skall påverkas eller ej1
+		void setAffectedByGravity(bool isAffected) { affectedByGravity = isAffected; }
 		void fall(int pixels);
+		// }
+
+		/*
+		tick:
+		This function handles all things a sprite should do each tick. It mostly calls other methods such as "handleCollision" and checks different states.
+		*/
+		int tick(std::vector<shared_ptr<Sprite>> sprites, std::shared_ptr<SDL_Rect> gameArea, bool gameIsPaused); //returns 0 if all went well.
 		
 	protected:
-		SDL_Texture* getTexture() const { return texture; }
+		/*
+		constructor:
+		Takes coordinates for placement, size of the sprite and a path to the media file, only supports .bmp files.
+		*/
 		Sprite(int x, int y, int w, int h, const char path[]); //konstrukorn, lär ta med dimensioner som argument, tar en path till en textur
-		void setWH(int w, int h); //bör kunna ändra storlek/position för spriten
-		void setXY(int x, int y);
-		void deleteMe() { toBeDeleted = true; }
 
-		//virtual void handleCollision(shared_ptr<const Sprite> other) { }
-		//bool checkCollision(shared_ptr<const Sprite> other); //returns 0 if no collision, 1-4 is the different directions where it colided
-
-		//kollisionshantering, förenklad
+		/*
+		Help methods for collision detection
+		*/
 		bool checkSpriteCollision(shared_ptr<Sprite> other);
 		bool checkBoundaryCollision(shared_ptr<SDL_Rect> playableArea);
 		bool checkRectCollision(shared_ptr<SDL_Rect> otherRect, shared_ptr<SDL_Rect> intersectionResult);
 
+		/*
+		getters/setters and state checking methods.
+		*/
+		SDL_Texture* getTexture() const { return texture; }
+		void setWH(int w, int h);
+		void setXY(int x, int y);
+		// when deleteMe is called, the Level where this sprite is placed will destroy it at the end of the current tick.
+		void deleteMe() { toBeDeleted = true; }
 
-		//elasticity
+		// A-grade things we did not have time to implement correctly {
 		int bounces = 0; //default is that it doesnt apply
 		int bounceRate = 0; //default is that it doesn't apply
 		bool bouncing = false; //defalult is that it doesn't apply
+		// }
 	private:
+		/*
+		private variables & methods, mostly handling the SDL_Rect, the texture and the deletion of "this".
+		*/
 		shared_ptr<SDL_Rect> rect; //definitionen av en rektangel, som kommer innehålla våran sprite
 		SDL_Texture* texture = nullptr;
 		bool solid = true; //standard att sprites är solida
 		void makeTexture(const char path[]);
-
-		//gravity stuff
-		bool affectedByGravity = false; //standard att sprites inte är påverkade av gravitationen
-		void adjustInsideWindow(shared_ptr<SDL_Rect> intersectionResult);
 		bool toBeDeleted = false;
+		void adjustInsideWindow(shared_ptr<SDL_Rect> intersectionResult);
+
+		// A-grade things we did not have time to implement correctly {
+		bool affectedByGravity = false; //standard att sprites inte är påverkade av gravitationen
+		// }
 	};
 
 } //cwing
