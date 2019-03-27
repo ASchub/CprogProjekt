@@ -13,20 +13,23 @@
 
 
 namespace cwing {
-	GameEngine::GameEngine(std::shared_ptr<Game> gameToLoad, int max_Fps, int min_Fps)
+	GameEngine::GameEngine(std::shared_ptr<TextBox> tb ,std::vector<std::shared_ptr<Hotkey>> keys, std::vector<std::shared_ptr<Level>> lvls, int max_Fps, int min_Fps)
 	{
-		loadGame(gameToLoad);
+		//loadGame(gameToLoad);
+		hotkeys = keys;
+		levels = lvls;
 		maxFps = max_Fps;
 		minFps = min_Fps;
-		loadLevel(gameToLoad->getLevels().at(0));
+		loadLevel(levels.at(0));
+		textbox = tb;
 	}
 
-	void GameEngine::loadGame(std::shared_ptr<Game> gameToLoad) {
+	/*void GameEngine::loadGame(std::shared_ptr<Game> gameToLoad) {
 		currentGame = gameToLoad;
 		hotkeys = currentGame->getHotkeys();
 		loadLevel(currentGame->getLevels().at(0));
 		textbox = currentGame->getTextBox();
-	}
+	}*/
 
 	void GameEngine::loadLevel(std::shared_ptr<Level> levelToLoad) {
 		currentLevel = levelToLoad;
@@ -39,10 +42,10 @@ namespace cwing {
 	*/
 	GameEngine::~GameEngine()
 	{
-		while (!sprites.empty()) {
+		/*while (!sprites.empty()) {
 			sprites.pop_back();
 		}
-		/*while (!added.empty()) {
+		while (!added.empty()) {
 			added.pop_back();
 		}
 		while (!removed.empty()) {
