@@ -12,9 +12,11 @@ namespace cwing {
 	public:
 		static shared_ptr<TextBox> getInstance(int x, int y, const char path[]); // only supports bmpd
 		void draw() const;
-		void textInput(SDL_Event& event);
+		void handleInput(const SDL_Event& event);
+		void textInput(const SDL_Event& event);
 		void backspace();
 		void mouseDown(const SDL_Event & event);
+		void keyDown(const SDL_Event & event);
 		std::shared_ptr<std::string> getText() { return inputText; }
 		~TextBox();
 	protected:

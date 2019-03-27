@@ -136,20 +136,12 @@ namespace cwing {
 		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
 				case SDL_QUIT: return true;
-				case SDL_MOUSEBUTTONDOWN:
-					for (shared_ptr<Sprite> s : currentLevel->getSprites())
-						s->mouseDown(event);
-					break;
-				case SDL_MOUSEBUTTONUP:
-					for (shared_ptr<Sprite> s : currentLevel->getSprites())
-						s->mouseUp(event);
-					break;
 				case SDL_KEYDOWN:
 					checkHotkeys(event);
 					break;
-
 			}
-
+			for (shared_ptr<Sprite> s : currentLevel->getSprites())
+				s->handleInput(event);
 		}
 		return false;
 	}

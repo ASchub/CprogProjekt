@@ -85,11 +85,27 @@ namespace cwing {
 		return inputTexture != NULL;
 	}
 
-	void TextBox::textInput(SDL_Event& event) {
-		if (event.key.keysym.sym != SDLK_BACKSPACE) {
-			inputText->append(event.text.text);
+	void TextBox::handleInput(const SDL_Event& event) {
+		switch (event.type) {
+		case SDL_MOUSEBUTTONDOWN:
+			mouseDown(event);
+			break;
+		case SDL_KEYDOWN:
+			keyDown(event);
+			break;
+		case SDL_TEXTINPUT:
+			textInput(event);
+			break;
 		}
-		reRender();
+	}
+
+	void TextBox::textInput(const SDL_Event& event) {
+		cout << "textinput" << endl;
+		if (event.type == SDL_TEXTINPUT && typing) {
+
+			inputText->append(event.text.text);
+			reRender();
+		}
 	}
 
 	void TextBox::backspace() {
@@ -99,33 +115,27 @@ namespace cwing {
 		reRender();
 	}
 
+	void TextBox::keyDown(const SDL_Event& e)
+	{
+		if (typing) {
+			switch (e.key.keysym.sym) {
+			case SDLK_BACKSPACE:
+				backspace();
+				break;
+			case SDLK_RETURN:
+				typing = false;
+				SDL_StopTextInput();
+				break;
+			}
+		}
+	}
 	void TextBox::mouseDown(const SDL_Event& e) {
-		
+
 		SDL_Point p = { e.button.x, e.button.y };
 		if (SDL_PointInRect(&p, getRect().get())) {
 			typing = true;
 			SDL_StartTextInput();
-			SDL_Event event;
-			while (typing) {
-				while (SDL_PollEvent(&event)) {
-					if (event.key.keysym.sym == SDLK_RETURN) {
-						typing = false;
-						SDL_StopTextInput();
-					}
-					else if (event.key.keysym.sym == SDLK_BACKSPACE) {
-						backspace();
-					}
-					else if (event.type == SDL_TEXTINPUT) {
-						textInput(event);
-					}
-					if (!typing) {
-						return;
-					}
-				}
-			}
 		}
-		
-		
 	}
 
 
