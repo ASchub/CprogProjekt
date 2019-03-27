@@ -118,8 +118,9 @@ namespace cwing {
 					else if (event.type == SDL_TEXTINPUT) {
 						textInput(event);
 					}
-					if (!typing)
+					if (!typing) {
 						return;
+					}
 				}
 			}
 		}
