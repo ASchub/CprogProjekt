@@ -17,13 +17,15 @@ public:
 	static shared_ptr<Player> getInstance() {
 		return shared_ptr<Player>(new Player(200, 200, "./media/p1.bmp"));
 	}
-	void mouseDown(const SDL_Event& event) {
-		cout << "MouseDown registered" << endl;
+	void handleInput(const SDL_Event& event) {
+		if(event.type == SDL_MOUSEBUTTONDOWN)
+			cout << "MouseDown registered" << endl;
 	}
 protected:
 	Player(int x, int y, const char path[]) : MovableSprite(x, y, path) {}
 };
 
+//Apple sprite, collect these to win a level, they delete themselves on collision
 class AppleSprite : public cwing::MovableSprite {
 public:
 	static shared_ptr<AppleSprite> getInstance(int x = 700, int y=0) {
@@ -70,10 +72,7 @@ protected:
 
 };
 
-
-
-
-class TestHotkey : public Hotkey {
+/*class TestHotkey : public Hotkey {
 public:
 	TestHotkey() :Hotkey(SDLK_SPACE) {}
 	void perform() {
@@ -83,7 +82,7 @@ public:
 
 void testFuncHotkey() {
 	cout << "Function Hotkey Working!" << endl;
-}
+} */
 
 namespace cwing {
 
