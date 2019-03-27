@@ -18,12 +18,12 @@ namespace cwing {
 		void initGame();
 		std::vector<std::shared_ptr<Level>> getLevels() { return levels; }
 		std::vector<std::shared_ptr<Hotkey>> getHotkeys() { return hotkeys; }
-	std::shared_ptr<TextBox> getTextBox() { return textbox; }
+	//std::shared_ptr<TextBox> getTextBox() { return textbox; }
 	private:
 		std::shared_ptr<MovableSprite> player;
 		std::vector<std::shared_ptr<Level>> levels;
 		std::vector<std::shared_ptr<Hotkey>> hotkeys;
-		std::shared_ptr<TextBox> textbox;
+		//std::shared_ptr<TextBox> textbox;
 		void addLevels();
 		void addHotkeys();
 		void createPlayer();

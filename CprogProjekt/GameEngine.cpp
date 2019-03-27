@@ -13,7 +13,7 @@
 
 
 namespace cwing {
-	GameEngine::GameEngine(std::shared_ptr<TextBox> tb ,std::vector<std::shared_ptr<Hotkey>> keys, std::vector<std::shared_ptr<Level>> lvls, int max_Fps, int min_Fps)
+	GameEngine::GameEngine(std::vector<std::shared_ptr<Hotkey>> keys, std::vector<std::shared_ptr<Level>> lvls, int max_Fps, int min_Fps)
 	{
 		//loadGame(gameToLoad);
 		hotkeys = keys;
@@ -21,7 +21,6 @@ namespace cwing {
 		maxFps = max_Fps;
 		minFps = min_Fps;
 		loadLevel(levels.at(0));
-		textbox = tb;
 	}
 
 	/*void GameEngine::loadGame(std::shared_ptr<Game> gameToLoad) {
@@ -97,7 +96,7 @@ namespace cwing {
 					break;
 				SDL_RenderClear(sys.getRen()); //Behöver först rensa allt gammalt om man ska rita på nytt
 				currentLevel->tick(); //kör tick-metod inuti leveln, inklusive ritar ut objekt
-				textbox->draw();
+				//textbox->draw();
 				SDL_RenderPresent(sys.getRen());
 				nextTick += (1000 / maxFps);
 			} //kör denna kod om vi kommit fram till nästa tick
@@ -117,20 +116,10 @@ namespace cwing {
 	}
 
 	bool GameEngine::handleEvents() { //returns TRUE if quit should be true
-		SDL_Point p;
-
 		while (SDL_PollEvent(&event)) {
-			if (!inputText) {
-				switch (event.type) {
+			switch (event.type) {
 				case SDL_QUIT: return true;
 				case SDL_MOUSEBUTTONDOWN:
-					cout << "mousedown" << endl;
-					p = { event.button.x, event.button.y };
-					if (SDL_PointInRect(&p, textbox->getRect().get())) {
-						inputText = true;
-						SDL_StartTextInput();
-					}
-
 					for (shared_ptr<Sprite> s : currentLevel->getSprites())
 						s->mouseDown(event);
 					break;
@@ -141,22 +130,6 @@ namespace cwing {
 				case SDL_KEYDOWN:
 					checkHotkeys(event);
 					break;
-				}
-
-			}
-			else {
-
-				if (event.key.keysym.sym == SDLK_RETURN) {
-					inputText = false;
-					SDL_StopTextInput();
-				}
-				else if (event.key.keysym.sym == SDLK_BACKSPACE) {
-					textbox->backspace();
-
-				}
-				else if(event.type == SDL_TEXTINPUT ){
-					textbox->textInput(event);
-				}
 
 			}
 

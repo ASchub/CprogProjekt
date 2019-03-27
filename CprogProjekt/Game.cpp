@@ -68,26 +68,29 @@ namespace cwing {
 		createPlayer();
 		addLevels();
 		addHotkeys();
-		textbox = TextBox::getInstance(0, 0, "./media/TextBox.bmp");
+		//textbox = TextBox::getInstance(0, 0, "./media/TextBox.bmp");
 	}
 
 	void Game::addLevels() {
+
+
+
 		std::shared_ptr<Level> level = shared_ptr<Level>(Level::getInstance());
-		level->add(StationarySprite::getInstance(100, 100, "./media/tree.bmp"));
-		level->add(StationarySprite::getInstance(500, 100, "./media/tree.bmp"));
+		level->setGravity(true, 5);
+		level->add(StationarySprite::getInstance(0, 100, "./media/platform.bmp"));
+		level->add(StationarySprite::getInstance(200, 350, "./media/platform.bmp"));
+		level->add(StationarySprite::getInstance(100, 600, "./media/platform.bmp"));
 		level->add(player);
-		level->add(AnimatedSprite::getInstance(500, 500, 14, 20, 7, "./media/flamesheet.bmp"));
+		level->add(TextBox::getInstance(0, 0, "./media/TextBox.bmp"));
 		level->add(AppleSprite::getInstance());
+		//level2->add(AnimatedSprite::getInstance(300, 300, 14, 20, 7, "./media/flamesheet.bmp"));
 		levels.push_back(level);
 
-
 		std::shared_ptr<Level> level2 = shared_ptr<Level>(Level::getInstance());
-		level2->setGravity(true, 5);
-		level2->add(StationarySprite::getInstance(0, 100, "./media/platform.bmp"));
-		level2->add(StationarySprite::getInstance(200, 350, "./media/platform.bmp"));
-		level2->add(StationarySprite::getInstance(100, 600, "./media/platform.bmp"));
+		level2->add(StationarySprite::getInstance(100, 100, "./media/tree.bmp"));
+		level2->add(StationarySprite::getInstance(500, 100, "./media/tree.bmp"));
 		level2->add(player);
-		//level2->add(AnimatedSprite::getInstance(300, 300, 14, 20, 7, "./media/flamesheet.bmp"));
+		level2->add(AnimatedSprite::getInstance(500, 500, 14, 20, 7, "./media/flamesheet.bmp"));
 		levels.push_back(level2);
 		
 	}

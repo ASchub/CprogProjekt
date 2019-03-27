@@ -99,5 +99,33 @@ namespace cwing {
 		reRender();
 	}
 
+	void TextBox::mouseDown(const SDL_Event& e) {
+		
+		SDL_Point p = { e.button.x, e.button.y };
+		if (SDL_PointInRect(&p, getRect().get())) {
+			typing = true;
+			SDL_StartTextInput();
+			SDL_Event event;
+			while (typing) {
+				while (SDL_PollEvent(&event)) {
+					if (event.key.keysym.sym == SDLK_RETURN) {
+						typing = false;
+						SDL_StopTextInput();
+					}
+					else if (event.key.keysym.sym == SDLK_BACKSPACE) {
+						backspace();
+					}
+					else if (event.type == SDL_TEXTINPUT) {
+						textInput(event);
+					}
+					if (!typing)
+						return;
+				}
+			}
+		}
+		
+		
+	}
+
 
 } //cwing
