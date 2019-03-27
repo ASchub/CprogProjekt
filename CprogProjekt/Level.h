@@ -27,7 +27,7 @@ namespace cwing {
 		Level(bool gravityOn, int downwardsMotion, std::shared_ptr<SDL_Rect> gameArea); //Konstruktor
 
 	private:
-		std::vector<shared_ptr<Sprite>> sprites;
+		std::vector<shared_ptr<Sprite>> sprites; //minnesläckage?
 		std::vector<shared_ptr<Sprite>> added, removed;
 
 		std::shared_ptr<SDL_Rect> playableArea;

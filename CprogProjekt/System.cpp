@@ -12,7 +12,10 @@ namespace cwing {
 		//bygger fönstret och renderaren för vårat globala sys objekt.
 		win = SDL_CreateWindow("Cwing", 100, 100, 800, 600, 0); //posX,posY,höjd,bredd,inga flaggor
 		ren = SDL_CreateRenderer(win, -1, 0); //-1 betyder ta första bästa renderare, inga flaggor
-		TTF_Init();
+		if (TTF_Init() == -1)
+		{
+			printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
+		}
 		font = TTF_OpenFont("c:/Windows/Fonts/arial.ttf", 36);
 		if (font == nullptr)
 			throw std::runtime_error("Font not found");

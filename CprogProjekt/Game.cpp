@@ -29,8 +29,7 @@ public:
 		return shared_ptr<AppleSprite>(new AppleSprite(400, 400, "./media/apple.bmp"));
 	}
 	void handleCollision(std::shared_ptr<SDL_Rect> intersection) {
-		getRect()->y = 0;
-		getRect()->x = 0;
+		deleteMe();
 	}
 
 protected:

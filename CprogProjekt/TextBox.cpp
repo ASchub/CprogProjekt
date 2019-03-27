@@ -13,15 +13,10 @@ namespace cwing {
 
 	TextBox::TextBox(int x, int y, const char path[]) : Sprite(x, y, 0, 0, path)
 	{
-		if (TTF_Init() == -1)
-		{
-			printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
-		}
-
 		inputText = std::shared_ptr<std::string>(new string());
-		if (inputTexture != nullptr)
+		if (inputTexture != NULL && inputTexture != nullptr) {
 			SDL_DestroyTexture(inputTexture);
-
+		}
 		SDL_Surface* surf = SDL_LoadBMP(path);
 		if (!loadTextureFromText("Enter name here", textColor))
 		{
@@ -58,11 +53,12 @@ namespace cwing {
 	bool TextBox::loadTextureFromText(std::string text, SDL_Color color)
 	{
 		//Get rid of preexisting texture
-		if (inputTexture != nullptr) {
+		if (inputTexture != NULL) {
 			SDL_DestroyTexture(inputTexture);
 		}
 		//Render text surface
 		SDL_Surface* textSurface = TTF_RenderText_Solid(sys.getFont(), text.c_str(), color);
+
 		if (textSurface == NULL)
 		{
 			printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());

@@ -22,7 +22,7 @@ namespace cwing {
 		bool loadTextureFromText(std::string text, SDL_Color color);
 		void reRender();
 		SDL_Color textColor = { 0,0,0,0xFF };
-		SDL_Texture* inputTexture = nullptr;
+		SDL_Texture* inputTexture = NULL;
 		std::shared_ptr<std::string> inputText;
 	};
 

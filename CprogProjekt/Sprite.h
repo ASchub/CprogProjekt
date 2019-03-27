@@ -25,8 +25,9 @@ namespace cwing {
 		Sprite(const Sprite&) = delete; //Copy konstruktorn, ska ej finnas då vi inte vill kunna skapa objekt av denna abstrakta klass
 		const Sprite& operator=(const Sprite&) = delete; //samma som ovan, ingen operator överlagring
 		virtual void handleCollision(std::shared_ptr<SDL_Rect> intersection) {}
-		bool isSolid() { return solid; }
+		bool isSolid() const { return solid; }
 		void setSolid(bool isSolid) { solid = isSolid; }
+		bool shouldBeDeleted() const { return toBeDeleted; };
 
 		//void checkCollideWithWindow();
 		virtual int tick(std::vector<shared_ptr<Sprite>> sprites, std::shared_ptr<SDL_Rect> gameArea) {
@@ -37,8 +38,8 @@ namespace cwing {
 					checkSpriteCollision(s);
 					//checkCollision(s);
 				}
-				draw();
 			}
+			draw();
 			return 0;
 		} //returns 0 if all went well.
 
@@ -56,6 +57,7 @@ namespace cwing {
 		Sprite(int x, int y, int w, int h, const char path[]); //konstrukorn, lär ta med dimensioner som argument, tar en path till en textur
 		void setWH(int w, int h); //bör kunna ändra storlek/position för spriten
 		void setXY(int x, int y);
+		void deleteMe() { toBeDeleted = true; }
 
 		//virtual void handleCollision(shared_ptr<const Sprite> other) { }
 		//bool checkCollision(shared_ptr<const Sprite> other); //returns 0 if no collision, 1-4 is the different directions where it colided
@@ -79,6 +81,7 @@ namespace cwing {
 		//gravity stuff
 		bool affectedByGravity = false; //standard att sprites inte är påverkade av gravitationen
 		void adjustInsideWindow(shared_ptr<SDL_Rect> intersectionResult);
+		bool toBeDeleted = false;
 	};
 
 } //cwing

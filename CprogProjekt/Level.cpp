@@ -57,6 +57,9 @@ namespace cwing {
 	void Level::tick() {
 		for (shared_ptr<Sprite> s : sprites) {
 			s->tick(sprites, playableArea);
+			if (s->shouldBeDeleted()) {
+				removed.push_back(s);
+			}
 		}
 		prepareNextTick();
 	}
