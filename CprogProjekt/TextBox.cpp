@@ -98,9 +98,8 @@ namespace cwing {
 	}
 
 	bool TextBox::textInput(const SDL_Event& event) {
-		cout << "textinput" << endl;
 		if (event.type == SDL_TEXTINPUT && typing) {
-
+			cout << "textinput" << endl;
 			inputText->append(event.text.text);
 			reRender();
 		}

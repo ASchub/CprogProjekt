@@ -42,7 +42,7 @@ namespace cwing {
 		SDL_Quit();
 	}
 
-	Uint32 spriteSpeed = 2;
+	Uint32 spriteSpeed = 10;
 	Uint32 spriteGravity = 4;
 	System sys; //definerar ett objekt, globalt så deklareras som extern i header filen
 

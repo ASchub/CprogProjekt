@@ -17,13 +17,15 @@ public:
 	static shared_ptr<Player> getInstance() {
 		return shared_ptr<Player>(new Player(200, 200, "./media/p1.bmp"));
 	}
-	void mouseDown(const SDL_Event& event) {
-		cout << "MouseDown registered" << endl;
+	void handleInput(const SDL_Event& event) {
+		if(event.type == SDL_MOUSEBUTTONDOWN)
+			cout << "MouseDown registered" << endl;
 	}
 protected:
 	Player(int x, int y, const char path[]) : MovableSprite(x, y, path) {}
 };
 
+//Apple sprite, collect these to win a level, they delete themselves on collision
 class AppleSprite : public cwing::MovableSprite {
 public:
 	static shared_ptr<AppleSprite> getInstance(int x = 700, int y=0) {
@@ -40,29 +42,29 @@ protected:
 	AppleSprite(int x, int y, const char path[]) : MovableSprite(x, y, path) {}
 };
 
-class LevelOne : public cwing::Level {
+class AppleLevel : public cwing::Level {
 public:
-	static std::shared_ptr<LevelOne> getInstance(bool gravity, int downwardsMotion, std::shared_ptr<SDL_Rect> gameArea) {
-		return std::shared_ptr<LevelOne>(new LevelOne(gravity, downwardsMotion, gameArea));
+	static std::shared_ptr<AppleLevel> getInstance(bool gravity, int downwardsMotion, std::shared_ptr<SDL_Rect> gameArea) {
+		return std::shared_ptr<AppleLevel>(new AppleLevel(gravity, downwardsMotion, gameArea));
 	}
 
-	static std::shared_ptr<LevelOne> getInstance() {
+	static std::shared_ptr<AppleLevel> getInstance() {
 		std::shared_ptr<SDL_Rect> gameArea = std::shared_ptr<SDL_Rect>(new SDL_Rect());
 		gameArea->w = 800; //TODO - fixa så w och h är anpassade efter fönsterstorlek.
 		gameArea->h = 600;
 		gameArea->x = 0;
 		gameArea->y = 0;
-		return std::shared_ptr<LevelOne>(new LevelOne(false, 0, gameArea));
+		return std::shared_ptr<AppleLevel>(new AppleLevel(false, 0, gameArea));
 	}
 protected:
-	LevelOne(bool gravityOn, int downwardsMotion, std::shared_ptr<SDL_Rect> gameArea) : Level(gravityOn, downwardsMotion, gameArea){ }
+	AppleLevel(bool gravityOn, int downwardsMotion, std::shared_ptr<SDL_Rect> gameArea) : Level(gravityOn, downwardsMotion, gameArea){ }
 	void completeLevel() {
 		int apples = 0;
 		for (shared_ptr<cwing::Sprite> s : sprites) {
 			if (dynamic_pointer_cast<AppleSprite>(s)) {
 				apples++;
+				break;
 			}
-				
 		}
 		if(apples == 0)
 			completed = true;
@@ -70,10 +72,7 @@ protected:
 
 };
 
-
-
-
-class TestHotkey : public Hotkey {
+/*class TestHotkey : public Hotkey {
 public:
 	TestHotkey() :Hotkey(SDLK_SPACE) {}
 	bool perform(bool gameIsPaused) {
@@ -85,7 +84,7 @@ public:
 
 void testFuncHotkey() {
 	cout << "Function Hotkey Working!" << endl;
-}
+} */
 
 namespace cwing {
 
@@ -108,7 +107,7 @@ namespace cwing {
 
 
 
-		std::shared_ptr<LevelOne> level = shared_ptr<LevelOne>(LevelOne::getInstance());
+		std::shared_ptr<AppleLevel> level = shared_ptr<AppleLevel>(AppleLevel::getInstance());
 		level->setGravity(true, 5);
 		level->add(StationarySprite::getInstance(0, 100, "./media/platform.bmp"));
 		level->add(StationarySprite::getInstance(200, 350, "./media/platform.bmp"));
@@ -119,11 +118,13 @@ namespace cwing {
 		//level2->add(AnimatedSprite::getInstance(300, 300, 14, 20, 7, "./media/flamesheet.bmp"));
 		levels.push_back(level);
 
-		std::shared_ptr<Level> level2 = shared_ptr<Level>(Level::getInstance());
+		std::shared_ptr<AppleLevel> level2 = shared_ptr<AppleLevel>(AppleLevel::getInstance());
 		level2->add(StationarySprite::getInstance(100, 100, "./media/tree.bmp"));
 		level2->add(StationarySprite::getInstance(500, 100, "./media/tree.bmp"));
 		level2->add(player);
 		level2->add(AnimatedSprite::getInstance(500, 500, 14, 20, 7, "./media/flamesheet.bmp"));
+		level2->add(AppleSprite::getInstance());
+		level2->add(AppleSprite::getInstance(0, 300));
 		levels.push_back(level2);
 		
 	}
