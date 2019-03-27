@@ -11,7 +11,10 @@
 
 using namespace cwing;
 
-// Create subclass of MovableSprite so we can make a general mouseDown handler for the player controlled character, here it just prints to console.
+/*
+Create subclass of MovableSprite so we can make a general mouseDown handler 
+for the player controlled character, here it just prints to console.
+*/
 class Player : public MovableSprite {
 public:
 	static shared_ptr<Player> getInstance() {
@@ -25,7 +28,11 @@ protected:
 	Player(int x, int y, const char path[]) : MovableSprite(x, y, path) {}
 };
 
-//Apple sprite, collect these to win a level, they delete themselves on collision
+/*
+Create subclass of MovableSprite, to define specific handleCollision for apple objects.
+AppleSprites are collected in order to win the level, they delete themselves on collision,
+and have an automatic behaviour to make them constantly move downwards.
+*/
 class AppleSprite : public MovableSprite {
 public:
 	static shared_ptr<AppleSprite> getInstance(int x = 700, int y=0) {
@@ -35,13 +42,16 @@ public:
 		deleteMe();
 	}
 	void automaticBehaviour() {
-		this->setXY(this->getRect()->x, (this->getRect()->y) + 2);
+		fall(2);
 	}
 
 protected:
 	AppleSprite(int x, int y, const char path[]) : MovableSprite(x, y, path) {}
 };
 
+/*
+Create subclass of Level, to define specific win-condition.
+*/
 class AppleLevel : public Level {
 public:
 	static std::shared_ptr<AppleLevel> getInstance(bool gravity, int downwardsMotion, std::shared_ptr<SDL_Rect> gameArea) {
@@ -50,7 +60,7 @@ public:
 
 	static std::shared_ptr<AppleLevel> getInstance() {
 		std::shared_ptr<SDL_Rect> gameArea = std::shared_ptr<SDL_Rect>(new SDL_Rect());
-		gameArea->w = 800; //TODO - fixa så w och h är anpassade efter fönsterstorlek.
+		gameArea->w = 800;
 		gameArea->h = 600;
 		gameArea->x = 0;
 		gameArea->y = 0;
@@ -82,13 +92,12 @@ protected:
 		createPlayer();
 		addLevels();
 		addHotkeys();
-		//textbox = TextBox::getInstance(0, 0, "./media/TextBox.bmp");
 	}
 
+	/*
+	Initializes levels, as well as the sprites for each level, and adds the Level objects to the level vector
+	*/
 	void Game::addLevels() {
-
-
-
 		std::shared_ptr<AppleLevel> level = shared_ptr<AppleLevel>(AppleLevel::getInstance());
 		level->setGravity(true, 5);
 		level->add(StationarySprite::getInstance(0, 100, "./media/platform.bmp"));
@@ -97,7 +106,6 @@ protected:
 		level->add(player);
 		level->add(TextBox::getInstance(0, 0, "./media/TextBox.bmp"));
 		level->add(AppleSprite::getInstance());
-		//level2->add(AnimatedSprite::getInstance(300, 300, 14, 20, 7, "./media/flamesheet.bmp"));
 		levels.push_back(level);
 
 		std::shared_ptr<AppleLevel> level2 = shared_ptr<AppleLevel>(AppleLevel::getInstance());
@@ -111,27 +119,21 @@ protected:
 		
 	}
 
+	/*
+	Initializes hotkeys and adds them to the hotkeys vector
+	*/
 	void Game::addHotkeys() {
 		hotkeys.push_back(MemberHotkey<MovableSprite>::getInstance(SDLK_UP, player, &Player::moveUp));
 		hotkeys.push_back(MemberHotkey<MovableSprite>::getInstance(SDLK_DOWN, player, &Player::moveDown));
 		hotkeys.push_back(MemberHotkey<MovableSprite>::getInstance(SDLK_RIGHT, player, &Player::moveRight));
 		hotkeys.push_back(MemberHotkey<MovableSprite>::getInstance(SDLK_LEFT, player, &Player::moveLeft));
 		hotkeys.push_back(MemberHotkey<MovableSprite>::getInstance(SDLK_SPACE, player, &Player::jump));
-		
-		/*
-		//hotkey testing, using SPACE, F, M
-		std::shared_ptr<TestHotkey> h = shared_ptr<TestHotkey>(new TestHotkey());
-		hotkeys.push_back(h);
-
-		std::shared_ptr<FunctionHotkey> fh = FunctionHotkey::getInstance(SDLK_f, testFuncHotkey);
-		hotkeys.push_back(fh);
-
-		std::shared_ptr<MemberHotkey<Hotkey>> mh = MemberHotkey<Hotkey>::getInstance(SDLK_m, fh, &Hotkey::perform);
-		hotkeys.push_back(mh);*/
 	}
-
+	
+	/*
+	Initializes the Player object
+	*/
 	void Game::createPlayer() {
-		//(200, 200, "./media/p1.bmp")
 		player = Player::getInstance();
 		player->setAffectedByGravity(true);
 		player->setBounces(5);

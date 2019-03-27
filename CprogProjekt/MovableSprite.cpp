@@ -7,9 +7,6 @@
 using namespace std;
 
 namespace cwing {
-	//int speed = spriteSpeed; //max movement per tick, magic number
-	 //resets every tick
-
 	shared_ptr<MovableSprite> MovableSprite::getInstance(int x, int y, const char path[]) {
 		return shared_ptr<MovableSprite>(new MovableSprite(x, y, path));
 	}

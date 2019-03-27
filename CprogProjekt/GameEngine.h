@@ -12,42 +12,63 @@ namespace cwing {
 	class GameEngine
 	{
 	public:
-		//GameEngine(std::shared_ptr<TextBox> tb, std::vector<std::shared_ptr<Hotkey>> keys, std::vector<std::shared_ptr<Level>> lvls, int maxFps = 70, int minFps = 5);
+		/*
+		Constructor:
+		Takes vectors for hotkeys and levels arguments,
+		as well as variables for max and min FPS.
+		The FPS variables have default values that are used if
+		no other values are defined.
+		*/
 		GameEngine(std::vector<std::shared_ptr<Hotkey>> keys, std::vector<std::shared_ptr<Level>> lvls, int maxFps = 70, int minFps = 5);
-		void add(std::shared_ptr<Sprite> s); //lägger till sprites i loopen
-		void add(std::shared_ptr<Hotkey> h); //lägger till hotkeys
-		void add(std::shared_ptr<Level> l);	//lägger till levels
-		void remove(std::shared_ptr<Sprite> s); //tar bort sprites från loopen
-		//void remove(shared_ptr<Hotkey> h);  //TODO: should implement this...
-		void setMaxFps(int i); //sätter eget maxFps
-		void setMinFps(int i); //sätter eget minFps
-		void run(); //startar spelloopen
-		//void nextLevel();
-		void addPlayer(std::shared_ptr<Sprite> p); //lägger till spelarobjekt
+
+		/*
+		Setters for FPS
+		*/
+		void setMaxFps(int i);
+		void setMinFps(int i);
+
+		/*
+		Runs the game loop
+		*/
+		void run();
+
+		/*
+		Destructor
+		*/
 		~GameEngine();
+
 	private:
-		bool handleEvents(); //returns TRUE if quit should be true
+		/*
+		Method to load the current level.
+		*/
+		void loadLevel(std::shared_ptr<Level> levelToLoad);
+
+		/*
+		Methods to handle events that are triggered inside the game loop
+		*/
+		bool handleEvents();						//returns TRUE if game should shut down
 		void checkHotkeys(SDL_Event &event);
+
+		/*
+		Private variables for game objects and hotkeys
+		*/
 		std::vector<std::shared_ptr<Hotkey>> hotkeys;
 		std::vector<std::shared_ptr<Level>> levels;
-		//std::shared_ptr<TextBox> textbox;
-		//std::vector<std::shared_ptr<Sprite>> sprites; //behöver vara pekare till sprite då det är en superklass, om man skickar en subklass och den tar emot hela objektet slicar den ned objektet till enbart sprite..
-		//std::vector<shared_ptr<Sprite>> added, removed; //för att ta bort saker under körning, skapar seperata vektorer för att hålla koll på vad som ska raderas/läggas på vid nästa tick
-		//std::vector<shared_ptr<Level>> levels;
-		std::shared_ptr<Game> currentGame;
 		std::shared_ptr<Level> currentLevel;
-		void loadLevel(std::shared_ptr<Level> levelToLoad);
-		//void loadGame(std::shared_ptr<Game> gameToLoad);
+		std::shared_ptr<Sprite> player;
+		/*
+		Private variables for game state and FPS
+		*/
 		int maxFps;
 		int minFps;
-		//bool inputText = false;
 		bool paused = false;
 		SDL_Event event;
-		//int currentLevel = 0; // starts at 0, updates when level is updated
-		std::shared_ptr<Sprite> player;
-
-		Uint32 nextTick = SDL_GetTicks(); //initiellt värde, uppdateras varje tick
-		Uint32 now;
+		
+		/*
+		Private variables for FPS-control
+		*/
+		Uint32 nextTick = SDL_GetTicks();	//Initial value, updates every tick
+		Uint32 now;							//Updates every tick
 	};
 
 } //cwing

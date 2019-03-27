@@ -15,7 +15,6 @@
 namespace cwing {
 	GameEngine::GameEngine(std::vector<std::shared_ptr<Hotkey>> keys, std::vector<std::shared_ptr<Level>> lvls, int max_Fps, int min_Fps)
 	{
-		//loadGame(gameToLoad);
 		hotkeys = keys;
 		levels = lvls;
 		maxFps = max_Fps;
@@ -23,56 +22,12 @@ namespace cwing {
 		loadLevel(levels.at(0));
 	}
 
-	/*void GameEngine::loadGame(std::shared_ptr<Game> gameToLoad) {
-		currentGame = gameToLoad;
-		hotkeys = currentGame->getHotkeys();
-		loadLevel(currentGame->getLevels().at(0));
-		textbox = currentGame->getTextBox();
-	}*/
-
 	void GameEngine::loadLevel(std::shared_ptr<Level> levelToLoad) {
 		currentLevel = levelToLoad;
-		//sprites = levelToLoad->getSprites();
 	}
 
-	/*
-	Vectorerna försvinner automatiskt, men vi måste gå igenom vectorn och radera allt innehåll
-	added, removed bör alltid vara tomma om avstängning kallats, men ifall något gick fel mitt i går vi även igenom dem...
-	*/
 	GameEngine::~GameEngine()
 	{
-		/*while (!sprites.empty()) {
-			sprites.pop_back();
-		}
-		while (!added.empty()) {
-			added.pop_back();
-		}
-		while (!removed.empty()) {
-			removed.pop_back();
-		}*/
-	}
-
-	void GameEngine::add(shared_ptr<Sprite> s) {
-		cout << "sprite" << endl;
-		currentLevel->add(s);
-	}
-
-	void GameEngine::add(shared_ptr<Hotkey> h) {
-		cout << "hotkey" << endl;
-		hotkeys.push_back(h);
-	}
-
-	/*void GameEngine::add(shared_ptr<Level> l) {
-		cout << "level" << endl;
-		levels.push_back(l);
-	}*/
-
-	void GameEngine::addPlayer(shared_ptr<Sprite> p) {
-		player = p;
-	}
-
-	void GameEngine::remove(shared_ptr<Sprite> s) {
-		currentLevel->remove(s);
 	}
 
 	void GameEngine::setMaxFps(int i) {
@@ -85,18 +40,19 @@ namespace cwing {
 
 	void GameEngine::run() {
 		SDL_SetRenderDrawColor(sys.getRen(), 255, 255, 255, 255);
-		bool quit = false; //styr när huvudloopen ska avbrytas.
+		bool quit = false;						//Determines when the main game loop should break
 
 		while (!quit) {
 			now = SDL_GetTicks();
 
 			if (nextTick <= now) {
-				quit = handleEvents(); //also handles hotkeys now, helpfunction "checkHotkeys()"
-				if (quit)
+				quit = handleEvents();			//Handles all SDL_Events that have been registered since the last tick
+				if (quit)						//Ends the loop if the event handler has determined that the game should shut down
 					break;
-				SDL_RenderClear(sys.getRen()); //Behöver först rensa allt gammalt om man ska rita på nytt
-				currentLevel->tick(paused); //kör tick-metod inuti leveln, inklusive ritar ut objekt
-				if (currentLevel->levelCompleted()) {
+				SDL_RenderClear(sys.getRen());
+				currentLevel->tick(paused);				//Runs tick() inside of the current Level, which includes drawing all game objects
+				if (currentLevel->levelCompleted()) {	//Controls if win-condition has been reached for the current level
+					//Determines which level is next level
 					unsigned int index = 1;
 					for (shared_ptr<Level> l : levels) {
 						if (currentLevel == levels.at(index - 1)) {
@@ -104,26 +60,29 @@ namespace cwing {
 						}
 						index++;
 					}
+					//If the index for next level is inside of the level vector, next level is loaded
 					if (levels.size() > index) {
 						loadLevel(levels.at(index));
 					} 
 					else {
+						//Else the game shuts down
 						cout << "You completed the game!";
 						break;
 					}
 				}
-
-				//textbox->draw();
 				SDL_RenderPresent(sys.getRen());
-				nextTick += (1000 / maxFps);
-			} //kör denna kod om vi kommit fram till nästa tick
+				nextTick += (1000 / maxFps);		//Calculates when next tick will be
+			} //This code runs if we have reached next tick
 			else {
 				SDL_Delay(nextTick - now);
-			} //vänta tills nästa tick
-		} //yttre while
+			} //Else wait until next tick
+		}
 
-	} //run
+	}
 
+	/*
+	Runs perform() in all defined hotkeys that corresponds to the event parameter
+	*/
 	void GameEngine::checkHotkeys(SDL_Event &event) {
 		for (shared_ptr<Hotkey> h : hotkeys) {
 			if (event.key.keysym.sym == h->getKey()) {
@@ -132,7 +91,14 @@ namespace cwing {
 		}
 	}
 
-	bool GameEngine::handleEvents() { //returns TRUE if quit should be true
+	/*
+	Checks all events that have been received since last tick.
+	Returns true if the program should shut down, else returns false.
+	Calls checkHotkeys() for keydown, AND calls handleEvent() in all sprites.
+	NOTE that if a hotkey and a sprite have both defined actions for certain conditions
+	BOTH actions will be performed.
+	*/
+	bool GameEngine::handleEvents() {
 		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
 				case SDL_QUIT: return true;
@@ -150,7 +116,4 @@ namespace cwing {
 		}
 		return false;
 	}
-	/*void GameEngine::nextLevel() {
-		currentLevel++;
-	}*/
 } //cwing

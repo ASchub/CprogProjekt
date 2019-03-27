@@ -6,18 +6,20 @@
 
 namespace cwing {
 
+	/*
+	Initializes window, renderer and font.
+	*/
 	cwing::System::System()
 	{
 		SDL_Init(SDL_INIT_EVERYTHING);
-		//bygger fönstret och renderaren för vårat globala sys objekt.
-		win = SDL_CreateWindow("Cwing", 100, 100, 800, 600, 0); //posX,posY,höjd,bredd,inga flaggor
-		ren = SDL_CreateRenderer(win, -1, 0); //-1 betyder ta första bästa renderare, inga flaggor
-		if (TTF_Init() == -1)
+		win = SDL_CreateWindow("Cwing", 100, 100, 800, 600, 0);			// posX, posY, height, width, no flags
+		ren = SDL_CreateRenderer(win, -1, 0);							//-1 means take first available renderer, no flags
+		if (TTF_Init() == -1)											//checks if TTF has been successfully initialized
 		{
 			printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
 		}
 		font = TTF_OpenFont("c:/Windows/Fonts/arial.ttf", 36);
-		if (font == nullptr)
+		if (font == nullptr)											//checks if font has been successfully initialized
 			throw std::runtime_error("Font not found");
 	}
 
@@ -42,6 +44,9 @@ namespace cwing {
 		SDL_Quit();
 	}
 
-	System sys; //definerar ett objekt, globalt så deklareras som extern i header filen
+	/*
+	Definition of the global sys object. Declared extern in the header file.
+	*/
+	System sys;
 
 } //cwing

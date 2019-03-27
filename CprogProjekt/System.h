@@ -4,7 +4,7 @@
 
 #include <memory>
 /*
-Globalt system objekt, där vi lägger in globala variabler som tex vår renderare.
+Global System object, containing global variables: the renderer, window and font
 */
 
 namespace cwing {
@@ -14,17 +14,35 @@ namespace cwing {
 	class System
 	{
 	public:
+		/*
+		Constructor
+		*/
 		System();
+
+		/*
+		Getters
+		*/
 		SDL_Renderer *getRen() const;
 		TTF_Font* getFont() const;
 		SDL_Window* getWin() const;
+		
+		/*
+		Destructor
+		*/
 		~System();
 	private:
+		/*
+		Private variables
+		*/
 		SDL_Window *win;
 		SDL_Renderer *ren;
 		TTF_Font* font;
 	};
 	
-	extern System sys; //extern deklarering visar allt som läser denna att det finns ett objekt "sys" nånstans, men den defineras inte här.
+	/*
+	Extern declaration of the system object gives the entire program access to the object "sys".
+	OBS! The object is not defined here.
+	*/
+	extern System sys;
 
 } //cwing
