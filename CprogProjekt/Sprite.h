@@ -15,8 +15,9 @@ namespace cwing {
 		virtual ~Sprite() { SDL_DestroyTexture(texture);};
 		//då denna är för subklasserna, dvs virtual, ej abstrakt (=0) men vi deklarerar en tom metod för de subklasser som inte vill ha en
 		//virtual void handleCollision(shared_ptr<const Sprite> other) {}
-		virtual void mouseDown(const SDL_Event& event) {}
-		virtual void mouseUp(const SDL_Event& event) {}
+		//virtual void mouseDown(const SDL_Event& event) {}
+		//virtual void mouseUp(const SDL_Event& event) {}
+		virtual void handleInput(const SDL_Event& event) {}
 		//virtual void keyDown(const SDL_Event& event) {}
 		//virtual void keyUp(const SDL_Event& event) {}
 		virtual void resetMoveThisTick() {}
