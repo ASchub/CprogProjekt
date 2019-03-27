@@ -23,17 +23,20 @@ protected:
 	Player(int x, int y, const char path[]) : MovableSprite(x, y, path) {}
 };
 
-class AppleSprite : public cwing::StationarySprite {
+class AppleSprite : public cwing::MovableSprite {
 public:
-	static shared_ptr<AppleSprite> getInstance() {
-		return shared_ptr<AppleSprite>(new AppleSprite(400, 400, "./media/apple.bmp"));
+	static shared_ptr<AppleSprite> getInstance(int x = 700, int y=0) {
+		return shared_ptr<AppleSprite>(new AppleSprite(x, y, "./media/apple.bmp"));
 	}
 	void handleCollision(std::shared_ptr<SDL_Rect> intersection) {
 		deleteMe();
 	}
+	void automaticBehaviour() {
+		this->setXY(this->getRect()->x, (this->getRect()->y) + 2);
+	}
 
 protected:
-	AppleSprite(int x, int y, const char path[]) : StationarySprite(x, y, path) {}
+	AppleSprite(int x, int y, const char path[]) : MovableSprite(x, y, path) {}
 };
 
 

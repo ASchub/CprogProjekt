@@ -41,6 +41,20 @@ namespace cwing {
 		rect->y = y;
 	}
 
+	int Sprite::tick(std::vector<shared_ptr<Sprite>> sprites, std::shared_ptr<SDL_Rect> gameArea) {
+		//checkCollideWithWindow();
+		automaticBehaviour();
+		checkBoundaryCollision(gameArea);
+		for (shared_ptr<Sprite> s : sprites) {
+			if (this != s.get()) {
+				checkSpriteCollision(s);
+				//checkCollision(s);
+			}
+		}
+		draw();
+		return 0;
+	}
+
 	bool Sprite::checkSpriteCollision(shared_ptr<Sprite> other) {
 		shared_ptr<SDL_Rect> intersectionResult = shared_ptr<SDL_Rect>(new SDL_Rect());
 		if (checkRectCollision(other->getRect(), intersectionResult) && isSolid() && other->isSolid()) {

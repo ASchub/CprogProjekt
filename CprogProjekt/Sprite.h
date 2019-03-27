@@ -28,20 +28,10 @@ namespace cwing {
 		bool isSolid() const { return solid; }
 		void setSolid(bool isSolid) { solid = isSolid; }
 		bool shouldBeDeleted() const { return toBeDeleted; };
+		virtual void automaticBehaviour() {}
 
 		//void checkCollideWithWindow();
-		virtual int tick(std::vector<shared_ptr<Sprite>> sprites, std::shared_ptr<SDL_Rect> gameArea) {
-			//checkCollideWithWindow();
-			checkBoundaryCollision(gameArea);
-			for (shared_ptr<Sprite> s : sprites) {
-				if (this != s.get()) {
-					checkSpriteCollision(s);
-					//checkCollision(s);
-				}
-			}
-			draw();
-			return 0;
-		} //returns 0 if all went well.
+		int tick(std::vector<shared_ptr<Sprite>> sprites, std::shared_ptr<SDL_Rect> gameArea); //returns 0 if all went well.
 
 		//elasticity
 		void setBounces(int b) { bounces = b; }
