@@ -9,7 +9,7 @@ namespace cwing {
 	class FunctionHotkey : public Hotkey
 	{
 	public:
-		void perform() { doIt(); }
+		bool perform(bool gameIsPaused) { if (!gameIsPaused || gameIsPaused && reactWhenPaused) { doIt(); } }
 		static shared_ptr<FunctionHotkey> getInstance(SDL_Keycode k, void(*f)()) {
 			return shared_ptr<FunctionHotkey>(new FunctionHotkey(k, f));
 		}

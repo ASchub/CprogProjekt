@@ -14,7 +14,7 @@ namespace cwing {
 		static std::shared_ptr<Level> getInstance();
 		void add(std::shared_ptr<Sprite> s);
 		void remove(std::shared_ptr<Sprite> s);
-		void tick();
+		void tick(bool gameIsPaused);
 		Level(const Level&) = delete; //Copy-konstruktorn, skall inte finnas pga värdesemantik
 		const Level& operator=(const Sprite&) = delete; //ingen operatoröverlagring
 		std::vector<shared_ptr<Sprite>> getSprites() { return sprites; }
@@ -42,7 +42,7 @@ namespace cwing {
 
 		//gravity stuff
 		void runGravity();
-		void prepareNextTick();
+		void prepareNextTick(bool gameIsPaused);
 		bool gravity;
 		int gravityStrength;
 

@@ -41,6 +41,7 @@ namespace cwing {
 		int maxFps;
 		int minFps;
 		//bool inputText = false;
+		bool paused = false;
 		SDL_Event event;
 		//int currentLevel = 0; // starts at 0, updates when level is updated
 		std::shared_ptr<Sprite> player;

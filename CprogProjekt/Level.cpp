@@ -54,14 +54,14 @@ namespace cwing {
 		gravityStrength = downwardsmotion;
 	}
 
-	void Level::tick() {
+	void Level::tick(bool gameIsPaused) {
 		for (shared_ptr<Sprite> s : sprites) {
-			s->tick(sprites, playableArea);
+			s->tick(sprites, playableArea, gameIsPaused);
 			if (s->shouldBeDeleted()) {
 				removed.push_back(s);
 			}
 		}
-		prepareNextTick();
+		prepareNextTick(gameIsPaused);
 	}
 
 	void Level::runGravity() {
@@ -72,7 +72,7 @@ namespace cwing {
 		}
 	}
 
-	void Level::prepareNextTick() {
+	void Level::prepareNextTick(bool gameIsPaused) {
 
 		//tar bort alla sprites som försvunnit under händelseförloppen., detta görs i slutet av loopen efter alla händelser har hanterats.
 		for (shared_ptr<Sprite> s : removed) {
@@ -103,7 +103,7 @@ namespace cwing {
 		completeLevel();
 
 		//kör gravitation inför nästa tick, förutsatt att gravitationen är på
-		if (gravity) {
+		if (gravity && !gameIsPaused) {
 			runGravity();
 		}
 	}

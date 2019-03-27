@@ -17,7 +17,7 @@ namespace cwing {
 		//virtual void handleCollision(shared_ptr<const Sprite> other) {}
 		//virtual void mouseDown(const SDL_Event& event) {}
 		//virtual void mouseUp(const SDL_Event& event) {}
-		virtual void handleInput(const SDL_Event& event) {}
+		virtual bool handleInput(const SDL_Event& event, bool gameIsPaused) { return false; }
 		//virtual void keyDown(const SDL_Event& event) {}
 		//virtual void keyUp(const SDL_Event& event) {}
 		virtual void resetMoveThisTick() {}
@@ -32,7 +32,7 @@ namespace cwing {
 		virtual void automaticBehaviour() {}
 
 		//void checkCollideWithWindow();
-		int tick(std::vector<shared_ptr<Sprite>> sprites, std::shared_ptr<SDL_Rect> gameArea); //returns 0 if all went well.
+		int tick(std::vector<shared_ptr<Sprite>> sprites, std::shared_ptr<SDL_Rect> gameArea, bool gameIsPaused); //returns 0 if all went well.
 
 		//elasticity
 		void setBounces(int b) { bounces = b; }

@@ -61,7 +61,6 @@ protected:
 		for (shared_ptr<cwing::Sprite> s : sprites) {
 			if (dynamic_pointer_cast<AppleSprite>(s)) {
 				apples++;
-				cout << "OK";
 			}
 				
 		}
@@ -77,8 +76,10 @@ protected:
 class TestHotkey : public Hotkey {
 public:
 	TestHotkey() :Hotkey(SDLK_SPACE) {}
-	void perform() {
-		cout << "Normal Hotkey working!" << endl;
+	bool perform(bool gameIsPaused) {
+		if (!gameIsPaused || gameIsPaused && reactWhenPaused) {
+			cout << "Normal Hotkey working!" << endl;
+		}
 	}
 };
 

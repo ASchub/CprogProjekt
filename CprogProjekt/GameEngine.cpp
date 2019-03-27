@@ -95,7 +95,7 @@ namespace cwing {
 				if (quit)
 					break;
 				SDL_RenderClear(sys.getRen()); //Behöver först rensa allt gammalt om man ska rita på nytt
-				currentLevel->tick(); //kör tick-metod inuti leveln, inklusive ritar ut objekt
+				currentLevel->tick(paused); //kör tick-metod inuti leveln, inklusive ritar ut objekt
 				if (currentLevel->levelCompleted()) {
 					int index = 0;
 					for (shared_ptr<Level> l : levels) {
@@ -121,7 +121,7 @@ namespace cwing {
 	void GameEngine::checkHotkeys(SDL_Event &event) {
 		for (shared_ptr<Hotkey> h : hotkeys) {
 			if (event.key.keysym.sym == h->getKey()) {
-				h->perform();
+				h->perform(paused);
 			}
 		}
 	}
@@ -134,8 +134,13 @@ namespace cwing {
 					checkHotkeys(event);
 					break;
 			}
-			for (shared_ptr<Sprite> s : currentLevel->getSprites())
-				s->handleInput(event);
+			for (shared_ptr<Sprite> s : currentLevel->getSprites()) {
+				bool changePausState = s->handleInput(event, paused);
+				if (changePausState) {
+					cout << "paus";
+					paused = !paused;
+				}
+			}
 		}
 		return false;
 	}
