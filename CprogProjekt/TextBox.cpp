@@ -128,6 +128,7 @@ namespace cwing {
 		}
 		return false;
 	}
+
 	bool TextBox::mouseDown(const SDL_Event& e) {
 
 		SDL_Point p = { e.button.x, e.button.y };
