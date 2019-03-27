@@ -9,10 +9,10 @@
 #include "TextBox.h"
 #include <memory>
 
-
+using namespace cwing;
 
 // Create subclass of MovableSprite so we can make a general mouseDown handler for the player controlled character, here it just prints to console.
-class Player : public cwing::MovableSprite {
+class Player : public MovableSprite {
 public:
 	static shared_ptr<Player> getInstance() {
 		return shared_ptr<Player>(new Player(200, 200, "./media/p1.bmp"));
@@ -26,7 +26,7 @@ protected:
 };
 
 //Apple sprite, collect these to win a level, they delete themselves on collision
-class AppleSprite : public cwing::MovableSprite {
+class AppleSprite : public MovableSprite {
 public:
 	static shared_ptr<AppleSprite> getInstance(int x = 700, int y=0) {
 		return shared_ptr<AppleSprite>(new AppleSprite(x, y, "./media/apple.bmp"));
@@ -42,7 +42,7 @@ protected:
 	AppleSprite(int x, int y, const char path[]) : MovableSprite(x, y, path) {}
 };
 
-class AppleLevel : public cwing::Level {
+class AppleLevel : public Level {
 public:
 	static std::shared_ptr<AppleLevel> getInstance(bool gravity, int downwardsMotion, std::shared_ptr<SDL_Rect> gameArea) {
 		return std::shared_ptr<AppleLevel>(new AppleLevel(gravity, downwardsMotion, gameArea));
@@ -60,7 +60,7 @@ protected:
 	AppleLevel(bool gravityOn, int downwardsMotion, std::shared_ptr<SDL_Rect> gameArea) : Level(gravityOn, downwardsMotion, gameArea){ }
 	void completeLevel() {
 		int apples = 0;
-		for (shared_ptr<cwing::Sprite> s : sprites) {
+		for (shared_ptr<Sprite> s : sprites) {
 			if (dynamic_pointer_cast<AppleSprite>(s)) {
 				apples++;
 				break;
@@ -72,25 +72,7 @@ protected:
 
 };
 
-/*class TestHotkey : public Hotkey {
-public:
-	TestHotkey() :Hotkey(SDLK_SPACE) {}
-	bool perform(bool gameIsPaused) {
-		if (!gameIsPaused || gameIsPaused && reactWhenPaused) {
-			cout << "Normal Hotkey working!" << endl;
-		}
-	}
-};
-
-void testFuncHotkey() {
-	cout << "Function Hotkey Working!" << endl;
-} */
-
-namespace cwing {
-
-
-
-
+//Game functions {
 	Game::Game()
 	{
 		initGame();
@@ -158,4 +140,4 @@ namespace cwing {
 	Game::~Game()
 	{
 	}
-}
+// }

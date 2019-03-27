@@ -7,11 +7,9 @@
 using namespace std;
 
 namespace cwing {
-	int frames;
-	int currentFrame = 0;
-	int delay = 40;
-	int delayCounter = 0;
-	unique_ptr<SDL_Rect> srcrect;
+
+	int currentFrame;
+	int delayCounter;
 
 	shared_ptr<AnimatedSprite> AnimatedSprite::getInstance(int x, int y, int w, int h, int nrOfFrames, const char path[]) {
 		return shared_ptr<AnimatedSprite>(new AnimatedSprite(x, y, w, h, nrOfFrames, path));
@@ -22,6 +20,9 @@ namespace cwing {
 
 	AnimatedSprite::AnimatedSprite(int x, int y, int w, int h, int nrOfFrames, const char path[]) : Sprite(x, y, w, h, path)
 	{
+		currentFrame = 0;
+		delayCounter = 0;
+
 		setSolid(false);
 		frames = nrOfFrames;
 		setWH(w, h);
@@ -30,8 +31,7 @@ namespace cwing {
 		srcrect->y = 0;
 		srcrect->w = w;
 		srcrect->h = h;
-	} //Animationen görs genom ett sprite sheet, nästa frame hämtas till höger om nuvarande frame (och loopar om man kommit till sista framen)
-	//Height/Width definierar hur stor spriten skall vara, och därmed också hur långt det är mellan olika frames på sprite sheetet.
+	}
 
 	void AnimatedSprite::makeTexture(const char path[]) {
 		if (getTexture() != nullptr)
@@ -45,7 +45,7 @@ namespace cwing {
 
 	void AnimatedSprite::setDelay(int d) {
 		delay = d;
-	} //Möjliggör att själv avgöra efter hur många ticks bilden skall uppdateras
+	} 
 
 	void AnimatedSprite::draw() const {
 			if (currentFrame >= frames) {

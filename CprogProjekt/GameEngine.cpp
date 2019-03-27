@@ -97,7 +97,7 @@ namespace cwing {
 				SDL_RenderClear(sys.getRen()); //Behöver först rensa allt gammalt om man ska rita på nytt
 				currentLevel->tick(paused); //kör tick-metod inuti leveln, inklusive ritar ut objekt
 				if (currentLevel->levelCompleted()) {
-					int index = 1;
+					unsigned int index = 1;
 					for (shared_ptr<Level> l : levels) {
 						if (currentLevel == levels.at(index - 1)) {
 							break;
